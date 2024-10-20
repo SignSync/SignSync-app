@@ -1,0 +1,55 @@
+# Entornos virtuales
+venv/
+.env
+*.env
+
+# Archivos de configuración sensibles
+config.py
+config/*.py
+instance/
+instance/*
+
+# Archivos compilados de Python
+*.pyc
+*.pyo
+__pycache__/
+
+# Archivos de base de datos
+*.sqlite3
+*.db
+
+# Archivos de logs
+*.log
+
+# Carpeta de migraciones (si usas Flask-Migrate)
+migrations/
+
+# Archivos de caché
+*.cache
+.cache/
+
+# Archivos de entorno y variables locales
+.env
+*.env
+*.local
+*.development
+
+# Archivos y carpetas generados por IDEs y editores de texto
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos creados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Node.js (si también estás usando Angular en el mismo repositorio)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+dist/
+
+# Archivos de Flask
+*.flaskenv
