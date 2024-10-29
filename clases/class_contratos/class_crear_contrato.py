@@ -1,9 +1,9 @@
 from flask import jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
-
 import models
 from models import db
 
+
+###############################PENDIENTE
 class Crear_Contrato:
     #definicion propiedades de la clase
     datos = any 
@@ -28,8 +28,7 @@ class Crear_Contrato:
             correo = datos['correo']
             contrasena = datos['contrasena']
             
-            hashed_password = generate_password_hash(contrasena)
-            newUser = models.Usuario(usuario = usuario, correo = correo, contrasena=hashed_password)
+            newUser = models.Usuario(usuario = usuario, correo = correo)
             
             db.session.add(newUser)
             db.session.commit()

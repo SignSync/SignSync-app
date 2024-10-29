@@ -15,6 +15,8 @@ import clases
 from clases.sign_up import Sign_up
 from clases.class_sign_in import Sign_in
 
+from clases.class_contratos import class_editar_contrato, class_crear_contrato, class_eliminar_contrato, class_listar_contratos  
+
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
 app.config.from_object(DevelopmentConfig)
@@ -54,6 +56,23 @@ def login():
         return jsonify({"error": str(e)}), 500  # Devolver el error
     
     return jsonify(data)
+
+
+@app.route('/api/editar-contrato', methods=['POST'])
+def editar_contrato():
+    try:
+        datos = request.get_json() #Recuperar DATA
+        listar_contrato = class_listar_contratos.Listar_Contrato()
+        data = listar_contrato.Listar(datos)
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+    return jsonify(data)
+
+
+
 
 
 
