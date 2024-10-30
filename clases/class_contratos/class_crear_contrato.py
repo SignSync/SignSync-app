@@ -17,24 +17,52 @@ class Crear_Contrato:
         self.correo = ''
         self.contrasena= ''
     
+    '''
+        @param idEmpresa, idContratista
+        @return
+            ERROR 
+            status, message
+            NO ERROR
+            status, idContrato_new
+    '''
     def RegistrarUser(self, datos):
         try:
-            #CHECA SI HAY DATOS 
-            if not datos or 'usuario' not in datos or 'correo' not in datos or 'contrasena' not in datos:
-                return jsonify({"error": "Faltan datos"}), 400
+            idEmpresa = datos['idEmpresa']
+            idContratista = datos['idContratista']
+            nombre = datos['nombre']
+            tipo = datos['tipo']
+            lugar = datos['lugar']
+            fecha_inicio = datos['fecha_inicio']
+            fecha_entrega = datos['fecha_entrega']
+            color = datos['color']
             
-            usuario = datos['usuario']
-            print(usuario)
-            correo = datos['correo']
-            contrasena = datos['contrasena']
+            if not idEmpresa:
+                return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa)"}), 400
             
-            newUser = models.Usuario(usuario = usuario, correo = correo)
+            if not idContratista:
+                return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idContratista)"}), 400
             
-            db.session.add(newUser)
+            newContract = db.Contratos(
+                nombre= nombre,
+                tipo= tipo,
+                lugar= lugar,
+                fecha_inicio= fecha_inicio,
+                fecha_entrega= fecha_entrega,
+                color= color,
+                id_empresa = idEmpresa
+            )
+            db.session.add(newContract)
             db.session.commit()
-            id_nuevo_user = newUser.id_user
+            id_nuevo_contrato = newContract.idContrato
+                    
+            newContratos_Contratistas = db.ContratosContratistas(
+                idContrato = id_nuevo_contrato,
+                idContratista = idContratista
+            )
+            db.session.add(newContratos_Contratistas)
+            db.session.commit()
             
-            data = {"message": "Usuario registrado correctamente", "id": id_nuevo_user}
+            data = jsonify({'status': True, "id_nuevo_contrato": id_nuevo_contrato}), 201
             
             return data
             

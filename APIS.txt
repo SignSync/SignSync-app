@@ -1,0 +1,13 @@
+/////////EMPRESAS
+Get empresa -- Recuperar la empresa de un usuario
+enlace: api/empresa/getempresa
+    Parametros: idUsuario
+    Return: empresa
+
+
+
+/////////
+Get contratistas -- Recuperar todos los contratistas de una empresa
+enlace: api/contratistas/getcontratistas
+    Parametros: idEmpresa
+    Return: contratistas

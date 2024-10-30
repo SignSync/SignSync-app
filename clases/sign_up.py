@@ -17,6 +17,15 @@ class Sign_up:
         self.correo = ''
         self.contrasena= ''
     
+    '''
+        @param usuario, correo, contrasena
+        @return
+            ERROR 
+            status, message
+            NO ERROR
+            status, message, id_nuevo_user
+    '''
+    
     def RegistrarUser(self, datos):
         try:
             #CHECA SI HAY DATOS 
@@ -34,7 +43,7 @@ class Sign_up:
             db.session.commit()
             id_nuevo_user = newUser.id_user
             
-            data = {"message": "Usuario registrado correctamente", "id": id_nuevo_user}
+            data = jsonify({"status": True, "id": id_nuevo_user}), 201
             
             return data
             

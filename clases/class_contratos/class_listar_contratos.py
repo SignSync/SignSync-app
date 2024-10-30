@@ -4,26 +4,24 @@ from models import db
 import datetime
 
 class Listar_Contrato:
-    #definicion propiedades de la clase
-    datos = any 
-   
-    
     #Declaración de contructor de la clase
     def __init__(self) -> None:
         self.idEmpresa = ''
-        self.correo = ''
-        self.contrasena= ''
-    
+            
+    '''
+    @param idempresa
+    @return contratos_alldata
+    '''
     def Listar(self, datos):
         try:
             #CHECA SI HAY DATOS 
-            if not datos or 'idEmpresa':
+            if not datos or 'idEmpresa' not in datos:
                 return jsonify({"error": "Faltan datos (idEmpresa)"}), 400
             
             idEmpresa = datos['idEmpresa']
             
             if not idEmpresa:
-                data = {"message": "No se ha enviado el ID de la empresa correctamente"}
+                return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa correctamente"}), 400
             contratos = db.Contratos.query.filter_by(id_empresa=idEmpresa).all()
             
             contratos_alldata = []
@@ -39,7 +37,7 @@ class Listar_Contrato:
                     'color': contrato.color  # Agregar el color del contrato
                 })
             
-            data = {"message": "Usuario registrado correctamente", "contratos": contratos_alldata}
+            data = jsonify({"status": True, "contratos": contratos_alldata}), 201
             
             return data
             

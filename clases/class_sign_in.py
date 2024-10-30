@@ -27,13 +27,13 @@ class Sign_in:
             user = models.Usuario.query.filter_by(correo=correo).first()
             if user:
                 if check_password_hash(user.contrasena, contrasena):
-                    data = {'user_id': user.id_user,
+                    data = jsonify({"status": True, 'user_id': user.id_user,
                             'user_name': user.usuario,
-                            'correo':user.correo}
+                            'correo':user.correo}), 201
                 else:
-                    data = {"message": "Contraseña o correo electornico no validos."}
+                    data = jsonify({"status": False, "message": "Contraseña o correo electornico no validos."}), 201
             else:
-                data = {"message": "Correo electronico no registrado"}
+                data = jsonify({"status": False,"message": "Correo electronico no registrado"}), 201
                  
             return data
             

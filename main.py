@@ -16,6 +16,9 @@ from clases.sign_up import Sign_up
 from clases.class_sign_in import Sign_in
 
 from clases.class_contratos import class_editar_contrato, class_crear_contrato, class_eliminar_contrato, class_listar_contratos  
+from clases.class_contratistas import class_getContratisas
+from clases.class_empresa import class_getEmpresa
+
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
@@ -26,23 +29,20 @@ locale.setlocale(locale.LC_TIME, 'es_ES')
 @app.route('/api', methods=['GET'])
 def get_data():
     data = {"message": "Bienvenido a SIGN SYNC API!"}
-    return jsonify(data)
+    return data
 
 @app.route('/api/sign-up', methods=['POST'])
 def register_usuario():
     try:
         datos = request.get_json() #Recuperar DATA
-
         sign_up = Sign_up()
-        data= sign_up.RegistrarUser(datos)
-        if "error" in data:
-            return jsonify(data)
+        data = sign_up.RegistrarUser(datos)
+        
+        return data
         
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error
-        return jsonify({"error": str(e)}), 500  # Devolver el error
-    
-    return jsonify(data)
+        return jsonify({"error": str(e)}), 500  # Devolver el error 
 
 @app.route('/api/sign-in', methods=['POST'])
 def login():
@@ -51,12 +51,43 @@ def login():
         sign_in = Sign_in()
         data = sign_in.loginUser(datos)
         
+        return data
+        
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500  # Devolver el error
     
-    return jsonify(data)
 
+    
+#EMPRESA
+@app.route('/api/empresa/getempresa', methods=['POST'])
+def get_Empresa():
+    try:
+        datos = request.get_json() #Recuperar DATA
+        
+        print(datos)
+        get_empresa = class_getEmpresa.Get_Empresa()
+        data = get_empresa.Get(datos)
+        
+        return data
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+##CONTRATISTAS
+
+@app.route('/api/contratistas/getcontratistas', methods=['POST'])
+def get_contratistas():
+    try:
+        datos = request.get_json() #Recuperar DATA
+        get_contratistas = class_getContratisas.Get_Contratistas()
+        data = get_contratistas.Get(datos)
+        
+        return data
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
 
 @app.route('/api/editar-contrato', methods=['POST'])
 def editar_contrato():
