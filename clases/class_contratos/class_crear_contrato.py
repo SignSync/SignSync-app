@@ -2,23 +2,17 @@ from flask import jsonify
 import models
 from models import db
 
+from models import Contratos, ContratosContratistas, Empresas
 
 ###############################PENDIENTE
 class Crear_Contrato:
-    #definicion propiedades de la clase
-    datos = any 
-    usuario = ''
-    correo = ''
-    contrasena = ''
     
     #DeclaraciÃ³n de contructor de la clase
     def __init__(self) -> None:
         self.usuario = ''
-        self.correo = ''
-        self.contrasena= ''
     
     '''
-        @param idEmpresa, idContratista
+        @param idEmpresa || id_usuario, idContratista
         @return
             ERROR 
             status, message
@@ -27,42 +21,51 @@ class Crear_Contrato:
     '''
     def RegistrarUser(self, datos):
         try:
-            idEmpresa = datos['idEmpresa']
-            idContratista = datos['idContratista']
             nombre = datos['nombre']
             tipo = datos['tipo']
-            lugar = datos['lugar']
+            lugar=datos['lugar']
             fecha_inicio = datos['fecha_inicio']
             fecha_entrega = datos['fecha_entrega']
             color = datos['color']
+            idEmpresa = datos['idEmpresa']
+            id_usuario = datos['id_usuario']
+            idContratista = datos['idContratista']
+            
+            if not idContratista: 
+                return jsonify({"status": False, "message": "No se ha enviado el ID del contratista (idContratista)"}), 400
+            
+            if not nombre or not fecha_inicio or not fecha_entrega or not color:
+                return jsonify({"status": False, "message": "Faltan campos obligatorios"}), 400
             
             if not idEmpresa:
-                return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa)"}), 400
+                if not id_usuario:
+                    return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
+                empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
+                if not empresa:
+                    return jsonify({"status": False, "message": "No se ha encontrado la empresa para el ID del usuario"}), 404
+                idEmpresa = empresa.idEmpresa
             
-            if not idContratista:
-                return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idContratista)"}), 400
-            
-            newContract = db.Contratos(
-                nombre= nombre,
-                tipo= tipo,
-                lugar= lugar,
-                fecha_inicio= fecha_inicio,
-                fecha_entrega= fecha_entrega,
-                color= color,
-                id_empresa = idEmpresa
+            newContract = Contratos(
+                nombre=nombre,
+                tipo=tipo,
+                lugar=lugar,
+                fecha_inicio=fecha_inicio,
+                fecha_entrega=fecha_entrega,
+                color=color,  # Se guarda el color seleccionado
+                id_empresa=idEmpresa
             )
             db.session.add(newContract)
             db.session.commit()
             id_nuevo_contrato = newContract.idContrato
-                    
-            newContratos_Contratistas = db.ContratosContratistas(
-                idContrato = id_nuevo_contrato,
-                idContratista = idContratista
+            
+            newContratos_Contratistas = ContratosContratistas(
+                idContrato=id_nuevo_contrato,
+                idContratista=idContratista
             )
             db.session.add(newContratos_Contratistas)
             db.session.commit()
             
-            data = jsonify({'status': True, "id_nuevo_contrato": id_nuevo_contrato}), 201
+            data = jsonify({"status": True, "id_nuevo_contrato": id_nuevo_contrato})
             
             return data
             

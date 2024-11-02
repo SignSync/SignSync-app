@@ -2,39 +2,43 @@ from flask import jsonify
 import models
 from models import db
 
+from models import Contratos, ContratosContratistas
 
-###############################PENDIENTE
+'''
+@param idContrato
+@return 
+    ERROR
+        status, message
+    NO ERROR
+        status, message
+'''
+
 class Eliminar_Contrato:
-    #definicion propiedades de la clase
-    datos = any 
-    usuario = ''
-    correo = ''
-    contrasena = ''
-    
     #DeclaraciÃ³n de contructor de la clase
     def __init__(self) -> None:
         self.usuario = ''
-        self.correo = ''
-        self.contrasena= ''
     
-    def RegistrarUser(self, datos):
+    def EliminarContrato(self, datos):
         try:
             #CHECA SI HAY DATOS 
-            if not datos or 'usuario' not in datos or 'correo' not in datos or 'contrasena' not in datos:
-                return jsonify({"error": "Faltan datos"}), 400
+            idContrato = datos['idContrato']
+            if not idContrato:
+                return jsonify({"status": False, "message": "No se ha enviado el ID del contrato (idContrato)"}), 400
+               
+               
+            contrato = Contratos.query.filter_by(idContrato=idContrato).first()
+            if not contrato:
+                return jsonify({"status": False, "message": "Contrato no encontrado"}), 404
             
-            usuario = datos['usuario']
-            print(usuario)
-            correo = datos['correo']
-            contrasena = datos['contrasena']
+            contrato_contratistas = ContratosContratistas.query.filter_by(idContrato=idContrato).all()
             
-            newUser = models.Usuario(usuario = usuario, correo = correo)
-            
-            db.session.add(newUser)
+            for enlace in contrato_contratistas:
+                db.session.delete(enlace)
+                    
+            db.session.delete(contrato)
             db.session.commit()
-            id_nuevo_user = newUser.id_user
             
-            data = {"message": "Usuario registrado correctamente", "id": id_nuevo_user}
+            data = jsonify({"status": True, "message": "Contrato eliminado correctamente"})
             
             return data
             

@@ -5,6 +5,18 @@ enlace: api/empresa/getempresa
     Return: empresa
 
 
+//////////////CONTRATOS
+Listar contratos usuario -- Listar contratos por ID de usuario
+enlace: 
+    Parametros: id_usuario
+    Return: contratos
+
+Listar contratos empresa -- Listar contratos por ID de empresa
+enlace: 
+    Parametros: idEmpresa
+    Return: contratos
+
+
 
 /////////
 Get contratistas -- Recuperar todos los contratistas de una empresa
