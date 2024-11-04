@@ -10,7 +10,7 @@ class Get_Contratistas:
         self.idEmpresa = ''
             
     '''
-    @param idEmpresa
+    @param idEmpresa || id_usuario *
     @return 
         ERROR
             status, message
@@ -28,12 +28,17 @@ class Get_Contratistas:
                 empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
                 idEmpresa = empresa.idEmpresa
                 
-            contratistas_empresa = Contratistas.query.filter_by(id_empresa=idEmpresa).all()
+            contratistas = Contratistas.query.filter_by(id_empresa=idEmpresa).all()
             
-            if not contratistas_empresa: 
-                return jsonify({"status": False, "message": "No se ha encontrado ningún contratista con el id de empresa: " + idEmpresa}), 400
-        
-            data = jsonify({"status": True, "empresa": contratistas_empresa}), 201
+            if not contratistas: 
+                return jsonify({"status": False, "message": f"No se ha encontrado ningún contratista con el id de empresa: {idEmpresa}"}), 400
+            contratistas_data = {
+                contratistas.nombre
+                
+            }
+            
+            
+            data = jsonify({"status": True, "empresa": contratistas_data}), 201
             
             return data
             

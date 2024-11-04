@@ -15,6 +15,11 @@ class Empresas(db.Model):
     __tablename__ = 'Empresas'
     idEmpresa = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
+    sector = db.Column(db.String(60), nullable=False)
+    correo = db.Column(db.String(60), nullable=False)
+    telefono = db.Column(db.String(20), nullable=False)
+    sitio_web = db.Column(db.String(255), nullable=True)
+    descripcion = db.Column(db.String(1000), nullable=True)
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuarios.id_user'), nullable=False)
     
     contratos = db.relationship('Contratos', backref='empresa', cascade="all, delete-orphan")
@@ -36,10 +41,10 @@ class Contratistas(db.Model):
     __tablename__ = 'Contratistas'
     idContratista = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
-    edad = db.Column(db.SmallInteger)
-    ocupacion = db.Column(db.String(50))
-    domicilio = db.Column(db.String(60))
-    telefono = db.Column(db.String(18), nullable=False)
+    edad = db.Column(db.SmallInteger, nullable=False)
+    ocupacion = db.Column(db.String(50), nullable=False)
+    domicilio = db.Column(db.String(60), nullable=True)
+    telefono = db.Column(db.String(18), nullable=True)
     id_empresa = db.Column(db.Integer, db.ForeignKey('Empresas.idEmpresa'), nullable=False)
     
     contratos_contratistas = db.relationship('ContratosContratistas', backref='contratista', cascade="all, delete-orphan")

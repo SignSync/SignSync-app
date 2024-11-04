@@ -12,14 +12,23 @@ class Crear_Contrato:
         self.usuario = ''
     
     '''
-        @param idEmpresa || id_usuario, idContratista
+        @param 
+            idEmpresa || id_usuario
+            idContratista
+            nombre
+            tipo
+            lugar
+            fecha_inicio
+            fecha_entrega
+            color
+            
         @return
             ERROR 
             status, message
             NO ERROR
             status, idContrato_new
     '''
-    def RegistrarUser(self, datos):
+    def def_crear_contrato(self, datos):
         try:
             nombre = datos['nombre']
             tipo = datos['tipo']

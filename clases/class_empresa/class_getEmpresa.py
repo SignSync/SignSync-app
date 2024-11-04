@@ -17,12 +17,8 @@ class Get_Empresa:
         NO ERROR
             status, empresa
     '''
-    def Get(self, datos):
+    def Get(self, id_usuario):
         try:
-            id_usuario = datos['id_usuario']
-            
-            print(id_usuario)
-            
             if not id_usuario:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del usuario (id_usuario)"}), 400
             
@@ -33,6 +29,11 @@ class Get_Empresa:
             empresa_data = {
                 "idEmpresa": empresa.idEmpresa,
                 "nombre": empresa.nombre,
+                "sector": empresa.sector,
+                "correo": empresa.correo,
+                "telefono": empresa.telefono,
+                "sitio_web": empresa.sitio_web,
+                "descripcion": empresa.descripcion,
                 "id_usuario": empresa.id_usuario
             }
         

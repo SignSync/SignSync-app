@@ -3,7 +3,7 @@ import models
 from models import db
 import datetime
 
-from models import Contratos
+from models import Contratos, Empresas
 class Listar_Contrato:
     #Declaración de contructor de la clase
     def __init__(self) -> None:
@@ -15,16 +15,18 @@ class Listar_Contrato:
     '''
     def Listar(self, datos):
         try:
-            #CHECA SI HAY DATOS 
-            if not datos or 'idEmpresa' not in datos:
-                return jsonify({"error": "Faltan datos (idEmpresa)"}), 400
-            
             idEmpresa = datos['idEmpresa']
+            id_usuario = datos['id_usuario']
             
             if not idEmpresa:
-                return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa correctamente"}), 400
-            contratos = Contratos.query.filter_by(id_empresa=idEmpresa).all()
+                if not id_usuario:
+                    return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
+                empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
+                if not empresa:
+                    return jsonify({"status": False, "message": "No se ha encontrado la empresa para el ID del usuario"}), 404
+                idEmpresa = empresa.idEmpresa
             
+            contratos = Contratos.query.filter_by(id_empresa=idEmpresa).all()
             if not contratos: 
                 return jsonify({"status": False, "message": "No se ha encontrado contratos con el idEmpresa: " + idEmpresa}), 400
             contratos_alldata = []

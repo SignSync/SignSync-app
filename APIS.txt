@@ -1,21 +1,62 @@
 /////////EMPRESAS
 Get empresa -- Recuperar la empresa de un usuario
 enlace: api/empresa/getempresa
-    Parametros: idUsuario
-    Return: empresa
+method: GET
+    Parametros: id_usuario
+    Return: status, empresa
+
+Eliminar empresa -- Elimnar la empresa de por idEmpresa
+enlace: api/empresa/
+method: DELETE
+    Parametros: idEmpresa
+    Return: status, message
+----- NOTA: AL ELIMINAR LA EMPRESA SE ELIMINAN SUS CONTRATOS Y CONTRATISTAS ----
+
+
 
 
 //////////////CONTRATOS
-Listar contratos usuario -- Listar contratos por ID de usuario
-enlace: 
-    Parametros: id_usuario
-    Return: contratos
+Listar contratos -- Listar contratos por ID de usuario o por ID empresa
+enlace: /api/contratos/getcontratos
+method: GET
+    Parametros: id_usuario || idEmpresa
+    Return: status, contratos
 
-Listar contratos empresa -- Listar contratos por ID de empresa
-enlace: 
-    Parametros: idEmpresa
-    Return: contratos
+Editar contrato -- Editar contrato por idContrato
+enlace: /api/contratos/editcontrato
+method: PUT
+    Parametros: 
+        idContrato
+        idEmpresa || id_usuario
+        idContratista
+        nombre
+        tipo
+        lugar
+        fecha_inicio
+        fecha_entrega
+        color
+    Return: status, message
 
+Eliminar contrato -- Eliminar un contrato por idContrato
+enlace: /api/contratos/deletecontrato
+method: DELETE
+    Parametros: idContrato
+    Return: status, message
+
+Crear contrato -- Crear contrato por id_usuario o idEmpresa
+enlace: /api/contratos/crearcontrato
+method: POST
+    Parametros: 
+        idEmpresa || id_usuario
+        idContratista
+        nombre
+        tipo
+        lugar
+        fecha_inicio
+        fecha_entrega
+        color
+    Return:
+        status, id_nuevo_contrato
 
 
 /////////

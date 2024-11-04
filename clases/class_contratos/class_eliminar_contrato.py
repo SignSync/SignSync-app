@@ -30,10 +30,11 @@ class Eliminar_Contrato:
             if not contrato:
                 return jsonify({"status": False, "message": "Contrato no encontrado"}), 404
             
-            contrato_contratistas = ContratosContratistas.query.filter_by(idContrato=idContrato).all()
+            # contrato_contratistas = ContratosContratistas.query.filter_by(idContrato=idContrato).all()
             
-            for enlace in contrato_contratistas:
-                db.session.delete(enlace)
+            # for enlace in contrato_contratistas:
+            #     db.session.delete(enlace)
+            
                     
             db.session.delete(contrato)
             db.session.commit()
