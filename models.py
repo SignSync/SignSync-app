@@ -8,6 +8,8 @@ class Usuario(db.Model):
     usuario  = db.Column(db.String(50))
     correo = db.Column(db.String(50))
     contrasena = db.Column(db.String(200))
+    sexo = db.Column(db.String(50))
+    fecha_nacimiento = db.Column(db.Date, nullable=True)
     created_date = db.Column(db.DateTime, default=datetime.datetime.now)
     empresas = db.relationship('Empresas', backref='usuario', cascade="all, delete-orphan")
     

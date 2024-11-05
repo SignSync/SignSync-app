@@ -19,27 +19,28 @@ class Edit_Empresa:
     '''
     def Edit(self, datos):
         try:
-            id_usuario = datos['id_usuario']
-            idEmpresa = datos['idEmpresa']
-            nombre = datos['nombre']
-            sector = datos['sector']
-            correo = datos['correo']
-            telefono = datos['telefono']
-            sitio_web = datos['sitio_web']
-            descripcion = datos['descripcion']
+            id_empresa = datos.get('id_empresa')
+            id_usuario = datos.get('id_usuario')
+            nombre = datos.get('nombre')
+            sector = datos.get('sector')
+            correo = datos.get('correo')
+            telefono = datos.get('telefono')
+            sitio_web = datos.get('sitio_web')
+            descripcion = datos.get('descripcion') 
             
-            if not idEmpresa:
+            if not id_empresa:
                 if not id_usuario:
                     return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
                 empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
                 if not empresa:
                     return jsonify({"status": False, "message": "No se ha encontrado la empresa para el ID del usuario"}), 404
                 idEmpresa = empresa.idEmpresa
-            
+            else:
+                idEmpresa = datos['idEmpresa']
             
             empresa = Empresas.query.filter_by(idEmpresa = idEmpresa).first()
             if not empresa: 
-                return jsonify({"status": False, "message": "No se ha encontrado ningua empresa con el id_usuario: " + id_usuario}), 400
+                return jsonify({"status": False, "message": "No se ha encontrado ningua empresa con el idEmpresa: " + idEmpresa}), 400
         
     
             empresa.nombre = nombre if nombre else empresa.nombre
@@ -49,6 +50,9 @@ class Edit_Empresa:
             empresa.sitio_web = sitio_web if sitio_web else empresa.sitio_web
             empresa.descripcion = descripcion if descripcion else empresa.descripcion
         
+            db.session.commit()
+            
+        
             data = jsonify({"status": True, "message": "Empresa editada correctamente"}), 201
             
             return data
@@ -57,5 +61,8 @@ class Edit_Empresa:
             print(str(e))
             db.session.rollback()  
             return jsonify({"error": str(e)}), 500  # Devolver el error
+        except KeyError:
+            # Manejar el error cuando 'idEmpresa' no está presente
+            return jsonify({"status": False, "message": f"No se ha proporcionado algún dato obligatorio: {e}"}), 400
     
     

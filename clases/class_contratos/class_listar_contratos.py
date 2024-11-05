@@ -13,19 +13,8 @@ class Listar_Contrato:
     @param idempresa
     @return contratos_alldata
     '''
-    def Listar(self, datos):
+    def Listar(self, idEmpresa):
         try:
-            idEmpresa = datos['idEmpresa']
-            id_usuario = datos['id_usuario']
-            
-            if not idEmpresa:
-                if not id_usuario:
-                    return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
-                empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
-                if not empresa:
-                    return jsonify({"status": False, "message": "No se ha encontrado la empresa para el ID del usuario"}), 404
-                idEmpresa = empresa.idEmpresa
-            
             contratos = Contratos.query.filter_by(id_empresa=idEmpresa).all()
             if not contratos: 
                 return jsonify({"status": False, "message": "No se ha encontrado contratos con el idEmpresa: " + idEmpresa}), 400
@@ -35,11 +24,22 @@ class Listar_Contrato:
                 start = contrato.fecha_inicio <= datetime.datetime.now().date()  # Determinar si ha comenzado
                 fecha_entrega = contrato.fecha_entrega
                 dias_restantes = (fecha_entrega - datetime.datetime.now().date()).days
+                
+                contrato_data = {
+                    "idContrato": contrato.idContrato,  # Asegúrate de reemplazar 'id' con el nombre correcto de la columna primaria
+                    "nombre": contrato.nombre,
+                    "tipo": contrato.tipo,
+                    "lugar": contrato.lugar,
+                    "fecha_inicio": contrato.fecha_inicio.isoformat(),  # Convertir fecha a string
+                    "fecha_entrega": contrato.fecha_entrega.isoformat(),  # Convertir fecha a string
+                    "color": contrato.color,
+                    "id_empresa": contrato.id_empresa
+                }
+                
                 contratos_alldata.append({
-                    'contrato': contrato,
+                    'contrato_data': contrato_data,
                     'dias_restantes': dias_restantes,
                     'contrato_inicio': start,
-                    'color': contrato.color  # Agregar el color del contrato
                 })
             
             data = jsonify({"status": True, "contratos": contratos_alldata}), 201

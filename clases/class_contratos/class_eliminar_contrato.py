@@ -21,7 +21,7 @@ class Eliminar_Contrato:
     def EliminarContrato(self, datos):
         try:
             #CHECA SI HAY DATOS 
-            idContrato = datos['idContrato']
+            idContrato = datos.get('idContrato')
             if not idContrato:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contrato (idContrato)"}), 400
                

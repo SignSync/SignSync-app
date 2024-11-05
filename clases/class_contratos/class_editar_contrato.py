@@ -2,6 +2,7 @@ from flask import jsonify
 import models
 from models import db
 
+from datetime import datetime
 from models import Contratos, ContratosContratistas, Empresas, Contratistas
 
 
@@ -32,18 +33,18 @@ class Editar_Contrato:
             status, message
     '''
     
-    def EditarContrato(self, datos):
+    def Editar(self, datos):
         try:
-            nombre = datos['nombre']
-            tipo = datos['tipo']
-            lugar=datos['lugar']
-            fecha_inicio = datos['fecha_inicio']
-            fecha_entrega = datos['fecha_entrega']
-            color = datos['color']
-            idEmpresa = datos['idEmpresa']
-            id_usuario = datos['id_usuario']
-            id_contrato = datos['id_contrato']
-            idContratista = datos['idContratista']
+            nombre = datos.get('nombre')
+            tipo = datos.get('tipo')
+            lugar=datos.get('lugar')
+            fecha_inicio = datos.get('fecha_inicio')
+            fecha_entrega = datos.get('fecha_entrega')
+            color = datos.get('color')
+            # idEmpresa = datos.get('idEmpresa')
+            # id_usuario = datos.get('id_usuario')
+            id_contrato = datos.get('id_contrato')
+            idContratista = datos.get('idContratista')
             
             if not id_contrato: 
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contrato (id_contrato)"}), 400
@@ -51,13 +52,17 @@ class Editar_Contrato:
             if not idContratista: 
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contratista (idContratista)"}), 400
             
-            if not idEmpresa:
-                if not id_usuario:
-                    return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
-                empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
-                if not empresa:
-                    return jsonify({"status": False, "message": "No se ha encontrado la empresa para el ID del usuario"}), 404
-                idEmpresa = empresa.idEmpresa
+            if fecha_entrega:
+                fecha_entrega = datetime.strptime(fecha_entrega, '%d-%m-%Y').strftime('%Y-%m-%d')           
+            if fecha_inicio:
+                fecha_inicio = datetime.strptime(fecha_inicio, '%d-%m-%Y').strftime('%Y-%m-%d')
+            # if not idEmpresa:
+            #     if not id_usuario:
+            #         return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
+            #     empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
+            #     if not empresa:
+            #         return jsonify({"status": False, "message": "No se ha encontrado la empresa para el ID del usuario"}), 404
+            #     idEmpresa = empresa.idEmpresa
             
             contrato = Contratos.query.filter_by(idContrato=id_contrato).first()
             if not contrato:

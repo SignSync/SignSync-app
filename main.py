@@ -3,7 +3,7 @@ from flask_cors import CORS
 import clases.sign_up
 from config import DevelopmentConfig
 from io import BytesIO
-from models import db
+from models import db, Empresas
 
 import models, locale, base64, os
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -15,9 +15,9 @@ import clases
 from clases.sign_up import Sign_up
 from clases.class_sign_in import Sign_in
 
-from clases.class_contratos import class_editar_contrato, class_crear_contrato, class_eliminar_contrato, class_listar_contratos  
-from clases.class_contratistas import class_getContratistas
-from clases.class_empresa import class_getEmpresa, class_crearEmpresa, class_deleteEmpresa, class_editEmpresa
+from clases.class_contratos import class_editar_contrato, class_crear_contrato, class_eliminar_contrato, class_listar_contratos, class_get_contrato
+from clases.class_contratistas import class_getContratistas, class_createContratistas,class_deleteContratistas,class_editContratistas, class_getContratista
+from clases.class_empresa import class_getEmpresa, class_listarEmpresas , class_crearEmpresa, class_deleteEmpresa, class_editEmpresa
 
 
 app = Flask(__name__)
@@ -73,12 +73,23 @@ def get_Empresa():
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500  # Devolver el error
     
+@app.route('/api/empresa/listarempresas', methods=['GET'])
+def listar_Empresas():
+    try:
+        obj_empresa = class_listarEmpresas.Listar_Empresas()
+        data = obj_empresa.Get()
+        
+        return data
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
 @app.route('/api/empresa/createempresa', methods=['POST'])
 def create_Empresa():
     try:
         datos = request.get_json() #Recuperar DATA
         
-        print(datos)
         creat_empresa = class_crearEmpresa.Crear_Empresa()
         data = creat_empresa.Crear(datos)
         
@@ -93,9 +104,8 @@ def delete_Empresa():
     try:
         datos = request.get_json() #Recuperar DATA
         
-        print(datos)
-        creat_empresa = class_crearEmpresa.Crear_Empresa()
-        data = creat_empresa.Crear(datos)
+        delete_empresa = class_deleteEmpresa.Delete_Empresa()
+        data = delete_empresa.delete(datos)
         
         return data
         
@@ -119,12 +129,76 @@ def editar_Empresa():
 
 ##CONTRATISTAS
 
-@app.route('/api/contratistas/getcontratistas', methods=['GET'])
+@app.route('/api/contratistas/listarcontratistas', methods=['GET'])
+def listar_contratistas():
+    try:
+        idEmpresa = request.args.get('idEmpresa')
+        id_usuario = request.args.get('id_usuario')
+            
+        if not idEmpresa:
+            if not id_usuario:
+                return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
+            empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
+            idEmpresa = empresa.idEmpresa
+            
+        print(idEmpresa)
+        get_contratistas = class_getContratistas.Get_Contratistas()
+        data = get_contratistas.Get(idEmpresa)
+        
+        return data
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+    
+@app.route('/api/contratistas/getcontratista', methods=['GET'])
 def get_contratistas():
     try:
+        idContratista = request.args.get('idContratista')
+            
+        print(idContratista)
+        obj_contratistas = class_getContratista.Get_Contratista()
+        data = obj_contratistas.Get(idContratista)
+        
+        return data
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+@app.route('/api/contratistas/crearcontratistas', methods=['POST'])
+def crear_contratistas():
+    try:
         datos = request.get_json() #Recuperar DATA
-        get_contratistas = class_getContratistas.Get_Contratistas()
-        data = get_contratistas.Get(datos)
+        obj_contratistas = class_createContratistas.Create_Contratistas()
+        data = obj_contratistas.Create(datos)
+        
+        return data
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+@app.route('/api/contratistas/editarcontratistas', methods=['PUT'])
+def editar_contratistas():
+    try:
+        datos = request.get_json() #Recuperar DATA
+        obj_contratistas = class_editContratistas.Edit_Contratistas()
+        data = obj_contratistas.Edit(datos)
+        
+        return data
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+@app.route('/api/contratistas/eliminarcontratista', methods=['DELETE'])
+def eliminar_contratistas():
+    try:
+        datos = request.get_json() #Recuperar DATA
+        obj_contratistas = class_deleteContratistas.Delete_Contratistas()
+        data = obj_contratistas.delete(datos)
         
         return data
         
@@ -133,13 +207,36 @@ def get_contratistas():
         return jsonify({"error": str(e)}), 500  # Devolver el error
 
 
+
 #////////////////////////////////CONTRATOS
-@app.route('/api/contratos/getcontratos', methods=['GET'])
-def listar_contrato():
+@app.route('/api/contratos/listarcontratos', methods=['GET'])
+def listar_contratos():
     try:
-        datos = request.get_json()
+        idEmpresa = request.args.get('idEmpresa')
+        id_usuario = request.args.get('id_usuario')
+        
+        if not idEmpresa:
+            if not id_usuario:
+                return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
+            empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
+            if not empresa:
+                return jsonify({"status": False, "message": "No se ha encontrado la empresa para el ID del usuario"}), 404
+            idEmpresa = empresa.idEmpresa
+        
         listar_contrato = class_listar_contratos.Listar_Contrato()
-        data = listar_contrato.Listar(datos)
+        data = listar_contrato.Listar(idEmpresa)
+        return data
+    
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+@app.route('/api/contratos/getcontrato', methods=['GET'])
+def get_contrato():
+    try:
+        idContrato = request.args.get('idContrato')
+        listar_contrato = class_get_contrato.Get_Contrato()
+        data = listar_contrato.Get(idContrato)
         return data
     
     except Exception as e:
@@ -162,8 +259,8 @@ def eliminar_contrato():
 def editar_contrato():
     try:
         datos = request.get_json() #Recuperar DATA
-        editar_contract = class_editar_contrato.Editar_Contrato
-        data = editar_contract.EditarContrato(datos)
+        editar_contract = class_editar_contrato.Editar_Contrato()
+        data = editar_contract.Editar(datos)
         
         return data
         

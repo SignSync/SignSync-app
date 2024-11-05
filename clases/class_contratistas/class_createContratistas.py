@@ -25,12 +25,12 @@ class Create_Contratistas:
     '''
     def Create(self, datos):
         try:
-            nombre = datos['nombre']
-            edad = datos['edad']
-            ocupacion = datos['ocupacion']
-            domicilio = datos['domicilio']
-            telefono = datos['telefono']
-            id_empresa = datos['id_empresa']
+            nombre = datos.get('nombre')
+            edad = datos.get('edad')
+            ocupacion = datos.get('ocupacion')
+            domicilio = datos.get('domicilio')
+            telefono = datos.get('telefono')
+            id_empresa = datos.get('idEmpresa')
             
             if not nombre or not edad or not ocupacion or not id_empresa:
                 return jsonify({"status": False, "message": "No se han enviado todos los datos obligatorios"}), 400
@@ -48,7 +48,7 @@ class Create_Contratistas:
             
             id_nuevo_contratista = newContratista.idContratista
             
-            data = jsonify({"status": True, "id_contratista": id_nuevo_contratista}), 201
+            data = jsonify({"status": True, "idContratista": id_nuevo_contratista}), 201
             
             return data
             

@@ -21,9 +21,8 @@ class Sign_in:
             if 'correo' not in datos or 'contrasena' not in datos:
                 return jsonify({"error": "Faltan datos"}), 400
         
-            correo = datos['correo']
-            contrasena = datos['contrasena']
-            
+            correo = datos.get('correo')
+            contrasena = datos.get('contrasena')            
             user = models.Usuario.query.filter_by(correo=correo).first()
             if user:
                 if check_password_hash(user.contrasena, contrasena):

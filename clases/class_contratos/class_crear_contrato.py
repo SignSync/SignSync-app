@@ -2,6 +2,8 @@ from flask import jsonify
 import models
 from models import db
 
+from datetime import datetime
+
 from models import Contratos, ContratosContratistas, Empresas
 
 ###############################PENDIENTE
@@ -30,21 +32,23 @@ class Crear_Contrato:
     '''
     def def_crear_contrato(self, datos):
         try:
-            nombre = datos['nombre']
-            tipo = datos['tipo']
-            lugar=datos['lugar']
-            fecha_inicio = datos['fecha_inicio']
-            fecha_entrega = datos['fecha_entrega']
-            color = datos['color']
-            idEmpresa = datos['idEmpresa']
-            id_usuario = datos['id_usuario']
-            idContratista = datos['idContratista']
+            nombre = datos.get('nombre')
+            tipo = datos.get('tipo')
+            lugar=datos.get('lugar')
+            fecha_inicio = datos.get('fecha_inicio')
+            fecha_entrega = datos.get('fecha_entrega')
+            color = datos.get('color')
+            idEmpresa = datos.get('idEmpresa')
+            id_usuario = datos.get('id_usuario')
+            idContratista = datos.get('idContratista')
             
             if not idContratista: 
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contratista (idContratista)"}), 400
             
             if not nombre or not fecha_inicio or not fecha_entrega or not color:
                 return jsonify({"status": False, "message": "Faltan campos obligatorios"}), 400
+            fecha_entrega = datetime.strptime(fecha_entrega, '%d-%m-%Y').strftime('%Y-%m-%d')           
+            fecha_inicio = datetime.strptime(fecha_inicio, '%d-%m-%Y').strftime('%Y-%m-%d')
             
             if not idEmpresa:
                 if not id_usuario:

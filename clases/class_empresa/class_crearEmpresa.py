@@ -19,13 +19,13 @@ class Crear_Empresa:
     '''
     def Crear(self, datos):
         try:
-            id_usuario = datos['id_usuario']
-            nombre = datos['nombre']
-            sector = datos['sector']
-            correo = datos['correo']
-            telefono = datos['telefono']
-            sitio_web = datos['sitio_web']
-            descripcion = datos['descripcion']
+            id_usuario = datos.get('id_usuario')
+            nombre = datos.get('nombre')
+            sector = datos.get('sector')
+            correo = datos.get('correo')
+            telefono = datos.get('telefono')
+            sitio_web = datos.get('sitio_web')
+            descripcion = datos.get('descripcion') 
             
             if not id_usuario:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del usuario (id_usuario)"}), 400

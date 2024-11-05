@@ -19,7 +19,10 @@ class Delete_Empresa:
     '''
     def delete(self, datos):
         try:
-            idEmpresa = datos['idEmpresa']
+            if not datos:
+                return jsonify({"status": False, "message": "No se ha enviado ningun dato"}), 400
+            
+            idEmpresa = datos.get('idEmpresa')
             
             if not idEmpresa:
                 return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa)"}), 400

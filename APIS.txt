@@ -1,40 +1,87 @@
+//////////SIGN UP
+Registro de usuario
+enlace: /api/sign-up
+method: POST
+    parametros: 
+        usuario *,
+        correo *,
+        contrasena *
+    return: 
+        status: True o False
+        id: id_nuevo_user
+
+//////////SIGN IN
+Inicio de usuario
+enlace: /api/sign-in
+method: POST
+    parametros: 
+        correo *
+        contrasena *
+    return: 
+        status: True o False
+        user_id
+        correo
+        user_name
+
 /////////EMPRESAS
 Get empresa -- Recuperar la empresa de un usuario
 enlace: api/empresa/getempresa
 method: GET
-    Parametros: id_usuario
+    Parametros: id_usuario *
     Return: status, empresa
 
-Eliminar empresa -- Elimnar la empresa de por idEmpresa
-enlace: api/empresa/
+Get empresas -- Recuperar todas las empresas registradas
+enlace: api/empresa/listarempresas
+method: GET
+    Parametros: 
+    Return: status, empresas
+
+Editae empresa -- Editar datos de una empresa por id de usuario
+enlace: api/empresa/getempresa
+method: GET
+    Parametros: 
+        id_usuario *,
+        nombre *,
+        sector *,
+        correo *,
+        telefono *,
+        sitio_web,
+        descripcion
+    Return: status, message
+
+Eliminar empresa -- Elimnar una empresa por idEmpresa
+enlace: api/empresa/eliminarEmpresa
 method: DELETE
-    Parametros: idEmpresa
+    Parametros: idEmpresa *
     Return: status, message
 ----- NOTA: AL ELIMINAR LA EMPRESA SE ELIMINAN SUS CONTRATOS Y CONTRATISTAS ----
 
 
-
-
 //////////////CONTRATOS
 Listar contratos -- Listar contratos por ID de usuario o por ID empresa
-enlace: /api/contratos/getcontratos
+enlace: api/contratos/listarcontratos
 method: GET
-    Parametros: id_usuario || idEmpresa
+    Parametros: id_usuario o idEmpresa *
     Return: status, contratos
+
+Listar contratos -- Listar contratos por ID del contrato
+enlace: api/contratos/getcontrato
+method: GET
+    Parametros: idContrato *
+    Return: status, contrato, controato_inicio, dias_restantes
 
 Editar contrato -- Editar contrato por idContrato
 enlace: /api/contratos/editcontrato
 method: PUT
     Parametros: 
-        idContrato
-        idEmpresa || id_usuario
-        idContratista
-        nombre
-        tipo
-        lugar
-        fecha_inicio
-        fecha_entrega
-        color
+        idContrato *
+        idContratista *
+        nombre *
+        tipo *
+        lugar *
+        fecha_inicio *
+        fecha_entrega *
+        color *
     Return: status, message
 
 Eliminar contrato -- Eliminar un contrato por idContrato
@@ -47,20 +94,60 @@ Crear contrato -- Crear contrato por id_usuario o idEmpresa
 enlace: /api/contratos/crearcontrato
 method: POST
     Parametros: 
-        idEmpresa || id_usuario
-        idContratista
-        nombre
-        tipo
-        lugar
-        fecha_inicio
-        fecha_entrega
-        color
+        idEmpresa o id_usuario *
+        idContratista *
+        nombre *
+        tipo *
+        lugar *
+        fecha_inicio *
+        fecha_entrega *
+        color *
     Return:
         status, id_nuevo_contrato
 
 
 /////////
-Get contratistas -- Recuperar todos los contratistas de una empresa
-enlace: api/contratistas/getcontratistas
-    Parametros: idEmpresa
-    Return: contratistas
+Listar contratistas -- Recuperar todos los contratistas de una empresa
+enlace: api/contratistas/listarcontratistas
+method: GET
+    Parametros: idEmpresa o id_usuario *
+    Return: contratistas, message
+
+Get contratista -- Recuperar contratistas por su id
+enlace: api/contratistas/getcontratista
+method: GET
+    Parametros: idContratista *
+    Return: message, contratista
+
+Crear contratista -- Crear un contratista
+enlace: api/contratistas/crearcontratistas
+method: POST
+    parametros:
+        idEmpresa *
+        nombre *
+        edad *
+        ocupacion *
+        telefono *
+        domicilio *
+    Return: 
+        status, idContratista
+
+Editar contratista -- editar un contratista por medio de su id
+enlace: api/contratistas/editarcontratistas
+method: PUT
+    parametros:
+        idContratista *
+        nombre *
+        edad *
+        ocupacion *
+        telefono *
+        domicilio *
+    Return: 
+        status, message
+
+Eliminar contratista -- Eliminar un contratista por su id
+enlace: api/contratistas/eliminarcontratista
+method: DELETE
+    parametros: idContratista *
+    Return: 
+        status, message

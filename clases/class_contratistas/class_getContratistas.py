@@ -17,29 +17,28 @@ class Get_Contratistas:
         NO ERROR
             status, contratistas
     '''
-    def Get(self, datos):
+    def Get(self, idEmpresa):
         try:
-            idEmpresa = datos['idEmpresa']
-            id_usuario = datos['id_usuario']
-            
-            if not idEmpresa:
-                if not id_usuario:
-                    return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
-                empresa = Empresas.query.filter_by(id_usuario=id_usuario).first()
-                idEmpresa = empresa.idEmpresa
-                
             contratistas = Contratistas.query.filter_by(id_empresa=idEmpresa).all()
             
             if not contratistas: 
                 return jsonify({"status": False, "message": f"No se ha encontrado ningún contratista con el id de empresa: {idEmpresa}"}), 400
-            contratistas_data = {
-                contratistas.nombre
-                
-            }
             
+            contratistas_data = [
+                {
+                    "idContratista": contratista.idContratista,           # Reemplaza 'id' con el nombre real de la columna de ID en Contratistas
+                    "nombre": contratista.nombre,
+                    "edad": contratista.edad,   # Reemplaza con los campos que tenga tu modelo Contratistas
+                    "ocupacion": contratista.ocupacion,
+                    "domicilio": contratista.domicilio,
+                    "telefono": contratista.telefono,
+                    "id_empresa": contratista.id_empresa
+                }
+                for contratista in contratistas
+            ]
+                        
             
-            data = jsonify({"status": True, "empresa": contratistas_data}), 201
-            
+            data = jsonify({"status": True, "contratistas": contratistas_data}), 201
             return data
             
         except Exception as e:

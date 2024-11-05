@@ -26,18 +26,19 @@ class Edit_Contratistas:
     '''
     def Edit(self, datos):
         try:
-            idContratista = datos['idContratista']
-            nombre = datos['nombre']
-            edad = datos['edad']
-            ocupacion = datos['ocupacion']
-            domicilio = datos['domicilio']
-            telefono = datos['telefono']
-            id_empresa = datos['id_empresa']
+            idContratista = datos.get('idContratista')
+            nombre = datos.get('nombre')
+            edad = datos.get('edad')
+            ocupacion = datos.get('ocupacion')
+            domicilio = datos.get('domicilio')
+            telefono = datos.get('telefono')
+            # id_empresa = datos.get('id_empresa')
+            
             
             if not idContratista:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contratista (idContratista)"}), 400
             
-            if not nombre or not edad or not ocupacion or not id_empresa:
+            if not nombre or not edad or not ocupacion:
                 return jsonify({"status": False, "message": "No se han enviado todos los datos obligatorios"}), 400
             
                 
@@ -50,7 +51,7 @@ class Edit_Contratistas:
             contratista.ocupacion = ocupacion if ocupacion else contratista.ocupacion
             contratista.domicilio = domicilio if domicilio else contratista.domicilio
             contratista.telefono = telefono if telefono else contratista.telefono
-            contratista.id_empresa = id_empresa if id_empresa else contratista.id_empresa
+            # contratista.id_empresa = id_empresa if id_empresa else contratista.id_empresa
             
             db.session.commit()
             
