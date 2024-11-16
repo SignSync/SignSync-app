@@ -38,7 +38,9 @@ class Contratos(db.Model):
     color = db.Column(db.String(7), nullable=False)  # Agrega la columna color
     id_empresa = db.Column(db.Integer, db.ForeignKey('Empresas.idEmpresa'), nullable=False)
     contratos_contratistas = db.relationship('ContratosContratistas', backref='contrato', cascade="all, delete-orphan")
-
+    Paquetes = db.relationship('Paquetes', backref='contrato', cascade="all, delete-orphan")
+    Documentos = db.relationship('Documentos', backref='contrato', cascade="all, delete-orphan")
+    
 class Contratistas(db.Model):
     __tablename__ = 'Contratistas'
     idContratista = db.Column(db.Integer, primary_key=True)
@@ -51,11 +53,38 @@ class Contratistas(db.Model):
     
     contratos_contratistas = db.relationship('ContratosContratistas', backref='contratista', cascade="all, delete-orphan")
     
+    
 class ContratosContratistas(db.Model):
     __tablename__ = 'Contratos_Contratistas'
     idContratosContratista = db.Column(db.Integer, primary_key=True)
     idContrato = db.Column(db.Integer, db.ForeignKey('Contratos.idContrato'), nullable=False)
     idContratista = db.Column(db.Integer, db.ForeignKey('Contratistas.idContratista'), nullable=False)
+   
+   
+class Paquetes(db.Model):
+    __tablename__ = 'Paquetes'
+    idPaquete = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(50), nullable=False)
+    idContrato = db.Column(db.Integer, db.ForeignKey('Contratos.idContrato'), nullable=False)
+    servicios = db.relationship('Servicios', backref='paquete', cascade="all, delete-orphan")
+    
+    
+class Servicios(db.Model):
+    __tablename__ = 'Servicios'
+    idServicio = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(50), nullable=False)
+    costo = db.Column(db.Float, nullable=False)
+    idPaquete = db.Column(db.Integer, db.ForeignKey('Paquetes.idPaquete'), nullable=False)
+    # servicio_paquete = db.relationship('Paquetes', backref='serivicio', cascade="all, delete-orphan")
+
+    
+class Documentos(db.Model):
+    __tablename__ = 'Documentos'
+    idDocumento = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(50), nullable=False)
+    url = db.Column(db.String(250), nullable=False)
+    idContrato = db.Column(db.Integer, db.ForeignKey('Contratos.idContrato'), nullable=False)
+    
     
 class Preguntas(db.Model):
     __tablename__ = 'Preguntas'
@@ -68,3 +97,7 @@ class Respuestas(db.Model):
     idRespuesta = db.Column(db.Integer, primary_key=True)
     respuesta = db.Column(db.String(250))
     idPregunta = db.Column(db.Integer, db.ForeignKey('Preguntas.idPregunta'), nullable=False)
+    
+    
+
+    

@@ -18,7 +18,10 @@ from clases.class_sign_in import Sign_in
 from clases.class_contratos import class_editar_contrato, class_crear_contrato, class_eliminar_contrato, class_listar_contratos, class_get_contrato
 from clases.class_contratistas import class_getContratistas, class_createContratistas,class_deleteContratistas,class_editContratistas, class_getContratista
 from clases.class_empresa import class_getEmpresa, class_listarEmpresas , class_crearEmpresa, class_deleteEmpresa, class_editEmpresa
+from clases.class_paquetes import class_crearPaquete, class_listarPaquetes, class_editarPaquete, class_eliminarPaquete
 
+from clases.class_servicios import class_crearServicio, class_editarServicio, class_eliminarServicio, class_listarServicios
+from clases.class_documentos import class_crearDocumento, class_editarDocumento, class_listarDocumento, class_eliminarDocumento
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
@@ -280,6 +283,172 @@ def crear_contrato():
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500  # Devolver el error
 
+
+#PAQUETES
+@app.route('/api/paquetes/paquete', methods=['POST'])
+def crear_paquete():
+    try:
+        datos = request.get_json()
+        obj_crear = class_crearPaquete.Crear_Paquete()
+        data = obj_crear.def_crear_contrato(datos)
+        return data
+    
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+@app.route('/api/paquetes/paquete', methods=['PUT'])
+def editar_paquete():
+    try:
+        datos = request.get_json()
+        editar= class_editarPaquete.Editar_Paquete()
+        data = editar.Editar(datos)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+@app.route('/api/paquetes/paquete', methods=['GET'])
+def listar_paquete():
+    try:
+        idContrato = request.args.get('idContrato')
+        listar = class_listarPaquetes.Listar_Paquete()
+        data = listar.Listar(idContrato)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+@app.route('/api/paquetes/paquete', methods=['DELETE'])
+def eliminar_paquete():
+    try:
+        datos = request.get_json()
+        eliminar = class_eliminarPaquete.Eliminar_Paquete()
+        data = eliminar.Eliminar(datos)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+
+
+# ///////////////////////////SERVICIOS
+@app.route('/api/servicios/servicio', methods=['POST'])
+def crear_servicio():
+    try:
+        datos = request.get_json()
+        # obj_crear = class_crearPaquete.Crear_Paquete()
+        # data = obj_crear.def_crear_contrato(datos)
+        # return data
+        pass
+    
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+    
+@app.route('/api/servicios/servicio', methods=['PUT'])
+def editar_servicio():
+    try:
+        datos = request.get_json()
+        # editar= class_editarPaquete.Editar_Paquete()
+        # data = editar.Editar(datos)
+        # return data
+        pass
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+@app.route('/api/servicios/servicio', methods=['GET'])
+def listar_servicio():
+    try:
+        idPaquete = request.args.get('idPaquete')
+        # listar = class_listarPaquetes.Listar_Paquete()
+        # data = listar.Listar(idContrato)
+        # return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+@app.route('/api/servicios/servicios', methods=['DELETE'])
+def eliminar_servicio():
+    try:
+        datos = request.get_json()
+        # eliminar = class_eliminarPaquete.Eliminar_Paquete()
+        # data = eliminar.Eliminar(datos)
+        # return data
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+# //////////////////////DOCUMENTOS
+
+@app.route('/api/documentos/documento', methods=['POST'])
+def registrar_documento():
+    try:
+        datos = request.get_json()
+        # obj_crear = class_crearPaquete.Crear_Paquete()
+        # data = obj_crear.def_crear_contrato(datos)
+        # return data
+        pass
+    
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+    
+@app.route('/api/documentos/documento', methods=['PUT'])
+def editar_documento():
+    try:
+        datos = request.get_json()
+        # editar= class_editarPaquete.Editar_Paquete()
+        # data = editar.Editar(datos)
+        # return data
+        pass
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+@app.route('/api/documentos/documento', methods=['GET'])
+def listar_documentos():
+    try:
+        idContrato = request.args.get('idContrato')
+        # listar = class_listarPaquetes.Listar_Paquete()
+        # data = listar.Listar(idContrato)
+        # return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+@app.route('/api/documentos/documento', methods=['DELETE'])
+def eliminar_documento():
+    try:
+        datos = request.get_json()
+        # eliminar = class_eliminarPaquete.Eliminar_Paquete()
+        # data = eliminar.Eliminar(datos)
+        # return data
+        
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+
+
+# class Servicios(db.Model):
+#     __tablename__ = 'Servicios'
+#     idServicio = db.Column(db.Integer, primary_key=True)
+#     nombre = db.Column(db.String(50), nullable=False)
+#     idPaquete = db.Column(db.Integer, db.ForeignKey('Paquetes.idPaquete'), nullable=False)
+#     # servicio_paquete = db.relationship('Paquetes', backref='serivicio', cascade="all, delete-orphan")
+
+    
+# class Documentos(db.Model):
+#     __tablename__ = 'Documentos'
+#     idDocumento = db.Column(db.Integer, primary_key=True)
+#     nombre = db.Column(db.String(50), nullable=False)
+    
+#     idContrato = db.Column(db.Integer, db.ForeignKey('Contratos.idContrato'), nullable=False)
 
 
 
