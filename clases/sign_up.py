@@ -30,11 +30,16 @@ class Sign_up:
         try:
             #CHECA SI HAY DATOS 
             if not datos or 'usuario' not in datos or 'correo' not in datos or 'contrasena' not in datos:
-                return jsonify({"error": "Faltan datos"}), 400
+                return jsonify({"status": False, "error": "Faltan datos"}), 400
             
             usuario = datos['usuario']
             correo = datos['correo']
             contrasena = datos['contrasena']
+            
+            usuarios = models.Usuario.query.all()
+            for usuario in usuarios:
+                if usuario.correo == correo:
+                     return jsonify({"status": False, "message": "El correo ya esta registrado"}), 400
             
             hashed_password = generate_password_hash(contrasena)
             newUser = models.Usuario(usuario = usuario, correo = correo, contrasena=hashed_password)

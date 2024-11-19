@@ -1,0 +1,115 @@
+{
+    "status": true,
+    "preguntas_url": [
+        [
+            1,
+            "static/img/graficos/funcionabilidad\\Pregunta_1_grafica.png",
+            "\u00bfQu\u00e9 funcionalidades adicionales considera esenciales en una aplicaci\u00f3n de gesti\u00f3n de contratos?",
+            [
+                "a) Integraci\u00f3n con calendarios",
+                "b) Acceso m\u00f3vil",
+                "c) An\u00e1lisis avanzado de datos",
+                "d) Otras (especifique)"
+            ]
+        ],
+        [
+            2,
+            "static/img/graficos/funcionabilidad\\Pregunta_2_grafica.png",
+            "\u00bfC\u00f3mo eval\u00faa la importancia de la facilidad de uso en una aplicaci\u00f3n de gesti\u00f3n de contratos?",
+            [
+                "a) Muy importante",
+                "b) Importante",
+                "c) Moderadamente importante",
+                "d) Poco importante"
+            ]
+        ],
+        [
+            3,
+            "static/img/graficos/funcionabilidad\\Pregunta_3_grafica.png",
+            "\u00bfQu\u00e9 tipo de alertas y notificaciones considera m\u00e1s \u00fatiles?",
+            [
+                "a) Plazos de contrato pr\u00f3ximos",
+                "b) Recordatorios de revisi\u00f3n",
+                "c) Alertas de vencimiento",
+                "d) Otras (especifique)"
+            ]
+        ],
+        [
+            4,
+            "static/img/graficos/funcionabilidad\\Pregunta_4_grafica.png",
+            "\u00bfCon qu\u00e9 frecuencia necesitar\u00eda actualizaciones de la aplicaci\u00f3n?",
+            [
+                "a) Mensualmente",
+                "b) Trimestralmente",
+                "c) Semestralmente",
+                "d) Anualmente"
+            ]
+        ],
+        [
+            5,
+            "static/img/graficos/funcionabilidad\\Pregunta_5_grafica.png",
+            "\u00bfQu\u00e9 nivel de personalizaci\u00f3n considera necesario para su PyME?",
+            [
+                "a) Muy alto",
+                "b) Alto",
+                "c) Moderado",
+                "d) Bajo"
+            ]
+        ],
+        [
+            6,
+            "static/img/graficos/funcionabilidad\\Pregunta_6_grafica.png",
+            "\u00bfC\u00f3mo prefiere recibir soporte t\u00e9cnico para la aplicaci\u00f3n?",
+            [
+                "a) Chat en l\u00ednea",
+                "b) Soporte telef\u00f3nico",
+                "c) Correo electr\u00f3nico",
+                "d) Base de conocimiento en l\u00ednea"
+            ]
+        ],
+        [
+            7,
+            "static/img/graficos/funcionabilidad\\Pregunta_7_grafica.png",
+            "\u00bfQu\u00e9 tan importante es la integraci\u00f3n con otras herramientas empresariales?",
+            [
+                "a) Muy importante",
+                "b) Importante",
+                "c) Moderadamente importante",
+                "d) Poco importante"
+            ]
+        ],
+        [
+            8,
+            "static/img/graficos/funcionabilidad\\Pregunta_8_grafica.png",
+            "\u00bfCu\u00e1n relevante es la capacidad de generar informes y an\u00e1lisis detallados?",
+            [
+                "a) Muy relevante",
+                "b) Relevante",
+                "c) Moderadamente relevante",
+                "d) Poco relevante"
+            ]
+        ],
+        [
+            9,
+            "static/img/graficos/funcionabilidad\\Pregunta_9_grafica.png",
+            "\u00bfCu\u00e1nto valora la capacidad de acceso m\u00f3vil a la aplicaci\u00f3n?",
+            [
+                "a) Muy valorado",
+                "b) Valorado",
+                "c) Moderadamente valorado",
+                "d) Poco valorado"
+            ]
+        ],
+        [
+            10,
+            "static/img/graficos/funcionabilidad\\Pregunta_10_grafica.png",
+            "\u00bfQu\u00e9 tan esencial es la funci\u00f3n de respaldo autom\u00e1tico de datos?",
+            [
+                "a) Muy esencial",
+                "b) Esencial",
+                "c) Moderadamente esencial",
+                "d) Poco esencial"
+            ]
+        ]
+    ]
+}

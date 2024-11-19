@@ -1,0 +1,116 @@
+{
+    "status": true,
+    "preguntas_url": [
+        [
+            1,
+            "static\\img\\graficos\\crecimiento\\Pregunta_1_grafica.png",
+            "\u00bfC\u00f3mo ha cambiado el tama\u00f1o de su PyME en los \u00faltimos cinco a\u00f1os?",
+            [
+                "a) Ha crecido significativamente",
+                "b) Ha crecido moderadamente",
+                "c) Se ha mantenido igual",
+                "d) Ha disminuido"
+            ]
+        ],
+        [
+            2,
+            "static\\img\\graficos\\crecimiento\\Pregunta_2_grafica.png",
+            "\u00bfCu\u00e1l ha sido el principal motor de crecimiento de su PyME en los \u00faltimos cinco a\u00f1os?",
+            [
+                "a) Aumento de la demanda de productos/servicios",
+                "b) Innovaci\u00f3n y desarrollo de nuevos productos",
+                "c) Expansi\u00f3n a nuevos mercados",
+                "d) Mejora de la eficiencia operativa",
+                "e) Otros (especifique)"
+            ]
+        ],
+        [
+            3,
+            "static\\img\\graficos\\crecimiento\\Pregunta_3_grafica.png",
+            "\u00bfQu\u00e9 porcentaje de su personal actual ha sido contratado en los \u00faltimos cinco a\u00f1os?",
+            [
+                "a) Menos del 10%",
+                "b) 10%-25%",
+                "c) 25%-50%",
+                "d) M\u00e1s del 50%"
+            ]
+        ],
+        [
+            4,
+            "static\\img\\graficos\\crecimiento\\Pregunta_4_grafica.png",
+            "\u00bfQu\u00e9 tan importante es la seguridad de los datos para su PyME?",
+            [
+                "a) Muy importante",
+                "b) Importante",
+                "c) Moderadamente importante",
+                "d) Poco importante"
+            ]
+        ],
+        [
+            5,
+            "static\\img\\graficos\\crecimiento\\Pregunta_5_grafica.png",
+            "\u00bfQu\u00e9 tan seguros se sienten sus empleados al utilizar nuevas aplicaciones tecnol\u00f3gicas en su trabajo diario?",
+            [
+                "a) Muy seguros",
+                "b) Seguros",
+                "c) Moderadamente seguros",
+                "d) Poco seguros"
+            ]
+        ],
+        [
+            6,
+            "static\\img\\graficos\\crecimiento\\Pregunta_6_grafica.png",
+            "\u00bfC\u00f3mo calificar\u00eda la confianza de sus empleados en la seguridad de las aplicaciones de gesti\u00f3n de datos?",
+            [
+                "a) Muy alta",
+                "b) Alta",
+                "c) Moderada",
+                "d) Baja"
+            ]
+        ],
+        [
+            7,
+            "static\\img\\graficos\\crecimiento\\Pregunta_7_grafica.png",
+            "\u00bfQu\u00e9 tan dispuesto est\u00e1 su equipo a adoptar nuevas tecnolog\u00edas que mejoren la eficiencia y seguridad?",
+            [
+                "a) Muy dispuesto",
+                "b) Dispuesto",
+                "c) Moderadamente dispuesto",
+                "d) Poco dispuesto"
+            ]
+        ],
+        [
+            8,
+            "static\\img\\graficos\\crecimiento\\Pregunta_8_grafica.png",
+            "\u00bfQu\u00e9 tan satisfecho est\u00e1 con las medidas de seguridad actuales para proteger los datos de su PyME?",
+            [
+                "a) Muy satisfecho",
+                "b) Satisfecho",
+                "c) Neutral",
+                "d) Insatisfecho"
+            ]
+        ],
+        [
+            9,
+            "static\\img\\graficos\\crecimiento\\Pregunta_9_grafica.png",
+            "\u00bfC\u00f3mo perciben sus empleados la facilidad de uso de las nuevas tecnolog\u00edas implementadas en los \u00faltimos a\u00f1os?",
+            [
+                "a) Muy f\u00e1cil",
+                "b) F\u00e1cil",
+                "c) Moderadamente f\u00e1cil",
+                "d) Dif\u00edcil"
+            ]
+        ],
+        [
+            10,
+            "static\\img\\graficos\\crecimiento\\Pregunta_10_grafica.png",
+            "\u00bfQu\u00e9 tan importante es para usted y sus empleados tener una aplicaci\u00f3n que asegure la confidencialidad y seguridad de los datos de contratos?",
+            [
+                "a) Muy importante",
+                "b) Importante",
+                "c) Moderadamente importante",
+                "d) Poco importante"
+            ]
+        ]
+    ]
+}

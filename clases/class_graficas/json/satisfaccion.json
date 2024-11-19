@@ -1,0 +1,115 @@
+{
+    "status": true,
+    "preguntas_url": [
+        [
+            1,
+            "static/img/graficos/satisfaccion\\Pregunta_1_grafica.png",
+            "\u00bfQu\u00e9 tan satisfecho est\u00e1 con el m\u00e9todo actual de gesti\u00f3n de contratos de su PyME?",
+            [
+                "a) Muy satisfecho",
+                "b) Satisfecho",
+                "c) Neutral",
+                "d) Insatisfecho"
+            ]
+        ],
+        [
+            2,
+            "static/img/graficos/satisfaccion\\Pregunta_2_grafica.png",
+            "\u00bfC\u00f3mo calificar\u00eda la experiencia del cliente con el m\u00e9todo actual de gesti\u00f3n de contratos?",
+            [
+                "a) Excelente",
+                "b) Buena",
+                "c) Regular",
+                "d) Mala"
+            ]
+        ],
+        [
+            3,
+            "static/img/graficos/satisfaccion\\Pregunta_3_grafica.png",
+            "\u00bfQu\u00e9 tan efectivo es su m\u00e9todo actual para mantener la confidencialidad de los datos del cliente?",
+            [
+                "a) Muy efectivo",
+                "b) Efectivo",
+                "c) Moderadamente efectivo",
+                "d) Poco efectivo"
+            ]
+        ],
+        [
+            4,
+            "static/img/graficos/satisfaccion\\Pregunta_4_grafica.png",
+            "\u00bfCon qu\u00e9 frecuencia los clientes tienen problemas con los contratos?",
+            [
+                "a) Muy frecuente",
+                "b) Frecuente",
+                "c) Ocasional",
+                "d) Raro"
+            ]
+        ],
+        [
+            5,
+            "static/img/graficos/satisfaccion\\Pregunta_5_grafica.png",
+            "\u00bfQu\u00e9 tan f\u00e1cil es para sus clientes acceder y comprender sus contratos?",
+            [
+                "a) Muy f\u00e1cil",
+                "b) F\u00e1cil",
+                "c) Moderadamente f\u00e1cil",
+                "d) Dif\u00edcil"
+            ]
+        ],
+        [
+            6,
+            "static/img/graficos/satisfaccion\\Pregunta_6_grafica.png",
+            "\u00bfQu\u00e9 tan importante es para usted la opini\u00f3n de sus clientes sobre la gesti\u00f3n de contratos?",
+            [
+                "a) Muy importante",
+                "b) Importante",
+                "c) Moderadamente importante",
+                "d) Poco importante"
+            ]
+        ],
+        [
+            7,
+            "static/img/graficos/satisfaccion\\Pregunta_7_grafica.png",
+            "\u00bfQu\u00e9 tan r\u00e1pido puede resolver los problemas relacionados con contratos?",
+            [
+                "a) Muy r\u00e1pido",
+                "b) R\u00e1pido",
+                "c) Moderadamente r\u00e1pido",
+                "d) Lento"
+            ]
+        ],
+        [
+            8,
+            "static/img/graficos/satisfaccion\\Pregunta_8_grafica.png",
+            "\u00bfQu\u00e9 tan satisfechos est\u00e1n sus clientes con la rapidez en la gesti\u00f3n de contratos?",
+            [
+                "a) Muy satisfechos",
+                "b) Satisfechos",
+                "c) Moderadamente satisfechos",
+                "d) Insatisfechos"
+            ]
+        ],
+        [
+            9,
+            "static/img/graficos/satisfaccion\\Pregunta_9_grafica.png",
+            "\u00bfQu\u00e9 tan relevante es la capacidad de los clientes para revisar y actualizar sus contratos?",
+            [
+                "a) Muy relevante",
+                "b) Relevante",
+                "c) Moderadamente relevante",
+                "d) Poco relevante"
+            ]
+        ],
+        [
+            10,
+            "static/img/graficos/satisfaccion\\Pregunta_10_grafica.png",
+            "\u00bfQu\u00e9 tan importante es la transparencia en la gesti\u00f3n de contratos para sus clientes?",
+            [
+                "a) Muy importante",
+                "b) Importante",
+                "c) Moderadamente importante",
+                "d) Poco importante"
+            ]
+        ]
+    ]
+}

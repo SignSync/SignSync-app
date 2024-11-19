@@ -48,7 +48,7 @@ class TodosView:
         contentFuncionalidad = manejar_contenido(FuncionalidadView, "funcionalidad")
         
         return {
-            'template': 'graficos/todos.html',
+            'status_todos': True,
             'contentViabilidad' : contentViabilidad,
             'contentCrecimiento' : contentCrecimiento,
             'contentRentabilidad' : contentRentabilidad,
@@ -62,6 +62,7 @@ class ViabilidadView:
     def get_context():
         filepath = f"clases/class_graficas/json/viabilidad.json"
         contenido = cargar_contenido(filepath)
+        # print(contenido)
         if contenido:
             return contenido
         
@@ -102,12 +103,12 @@ class ViabilidadView:
         preguntas = []
         
         for i in range(10):
-            pregunta_url = GenerarImgGrafica('Pregunta_'+ str(i+1), '', '', '', viabilidad)
+            pregunta_url = GenerarImgGrafica('Pregunta_'+ str(i+1), '', '', '', viabilidad, 'viabilidad')
             array = [i+1, pregunta_url, preguntas_text[i], respuestas_text[i]]
             preguntas.append(array)
         
         return {
-            'template': 'graficos/viabilidad.html',
+            'status': True,
             'preguntas_url': preguntas
         }
         
@@ -115,7 +116,7 @@ class ViabilidadView:
 class RentabilidadView:
     @staticmethod
     def get_context():
-        filepath = f"json/rentabilidad.json"
+        filepath = f"clases/class_graficas/json/rentabilidad.json"
         contenido = cargar_contenido(filepath)
         if contenido:
             return contenido
@@ -123,8 +124,8 @@ class RentabilidadView:
         engine = create_engine(DevelopmentConfig.SQLALCHEMY_DATABASE_URI, echo=True)
         connection = engine.connect()
         #
-        rentabilidad_csv = pd.read_csv('encuestas/encuestas-rentabilidad.csv')
-        rentabilidad_csv.to_sql(name='grafico_rentabilidad', con=connection, if_exists='append')
+        # rentabilidad_csv = pd.read_csv('clases/class_graficas/encuestas/encuestas-rentabilidad.csv')
+        # rentabilidad_csv.to_sql(name='grafico_rentabilidad', con=connection, if_exists='append')
         #
         preguntas_text = [
             '¿Qué factores consideraría importantes al evaluar el costo de una aplicación de gestión de contratos para PyMEs?', 
@@ -151,33 +152,33 @@ class RentabilidadView:
             ['a) Muy satisfecho', 'b) Satisfecho', 'c) Neutral', 'd) Insatisfecho']
         ]     
         
-        sql_rentabilidad = 'select * from signsync.grafico_rentabilidad'
+        sql_rentabilidad = 'select * from grafico_rentabilidad'
         rentabilidad = pd.read_sql_query(sql_rentabilidad, con=connection)
         
         preguntas = []
         
         for i in range(10):
-            pregunta_url = GenerarImgG_pastel('Pregunta_'+ str(i+1), '', '', '', rentabilidad)
+            pregunta_url = GenerarImgG_pastel('Pregunta_'+ str(i+1), '', '', '', rentabilidad, 'rentabilidad')
             array = [i+1, pregunta_url, preguntas_text[i], respuestas_text[i]]
             preguntas.append(array)
         
         return {
-            'template': 'graficos/rentabilidad.html',
+            'status': True,
             'preguntas_url': preguntas
         }
 
 class FuncionalidadView:
     @staticmethod
     def get_context():
-        filepath = f"json/funcionalidad.json"
+        filepath = f"clases/class_graficas/json/funcionalidad.json"
         contenido = cargar_contenido(filepath)
         if contenido:
             return contenido
         engine = create_engine(DevelopmentConfig.SQLALCHEMY_DATABASE_URI, echo=True)
         connection = engine.connect()
         #
-        funcionalidad_csv = pd.read_csv('encuestas/encuestas-funcionabilidad.csv')
-        funcionalidad_csv.to_sql(name='grafico_funcionabilidad', con=connection, if_exists='append')
+        # funcionalidad_csv = pd.read_csv('clases/class_graficas/encuestas/encuestas-funcionabilidad.csv')
+        # funcionalidad_csv.to_sql(name='grafico_funcionabilidad', con=connection, if_exists='append')
         #
         preguntas_text = [
             '¿Qué funcionalidades adicionales considera esenciales en una aplicación de gestión de contratos?',
@@ -224,35 +225,35 @@ class FuncionalidadView:
             ['a) Muy satisfecho', 'b) Satisfecho', 'c) Neutral', 'd) Insatisfecho']
         ]
         
-        sql_funcionabilidad = 'select * from grafico_funcionabilidad'
+        sql_funcionabilidad = 'SELECT * from grafico_funcionabilidad'
         funcionabilidad = pd.read_sql_query(sql_funcionabilidad, con=connection)
         
         preguntas = []
         
         for i in range(10):
-            pregunta_url = GenerarImgGrafica('Pregunta_'+ str(i+1), '', '', '', funcionabilidad)
+            pregunta_url = GenerarImgGrafica('Pregunta_'+ str(i+1), '', '', '', funcionabilidad, 'funcionabilidad')
             array = [i+1, pregunta_url, preguntas_text[i], respuestas_text[i]]
             preguntas.append(array)
         
         
         
         return {
-            'template': 'graficos/funcionalidad.html',
+            'status': True,
             'preguntas_url': preguntas
         }
 
 class AceptabilidadView:
     @staticmethod
     def get_context():
-        filepath = f"json/aceptabilidad.json"
+        filepath = f"clases/class_graficas/json/aceptabilidad.json"
         contenido = cargar_contenido(filepath)
         if contenido:
             return contenido
         engine = create_engine(DevelopmentConfig.SQLALCHEMY_DATABASE_URI, echo=True)
         connection = engine.connect()
         #
-        aceptabilidad_csv = pd.read_csv('encuestas/encuestas-aceptabilidad.csv')
-        aceptabilidad_csv.to_sql(name='grafico_aceptabilidad', con=connection, if_exists='append')
+        # aceptabilidad_csv = pd.read_csv('clases/class_graficas/encuestas/encuestas-aceptabilidad.csv')
+        # aceptabilidad_csv.to_sql(name='grafico_aceptabilidad', con=connection, if_exists='append')
         #
         preguntas_text = [
             '¿Qué tan probable es que recomiende una aplicación de gestión de contratos a otros propietarios de PyMEs?', 
@@ -285,19 +286,19 @@ class AceptabilidadView:
         preguntas = []
         
         for i in range(10):
-            pregunta_url = GenerarImgGrafica('Pregunta_'+ str(i+1), '', '', '', aceptabilidad)
+            pregunta_url = GenerarImgGrafica('Pregunta_'+ str(i+1), '', '', '', aceptabilidad, 'aceptabilidad')
             array = [i+1, pregunta_url, preguntas_text[i], respuestas_text[i]]
             preguntas.append(array)
         
         return {
-            'template': 'graficos/aceptabilidad.html',
+            'status': True,
             'preguntas_url': preguntas
         }
 
 class SastifaccionView:
     @staticmethod
     def get_context():
-        filepath = f"json/satisfaccion.json"
+        filepath = f"clases/class_graficas/json/satisfaccion.json"
         contenido = cargar_contenido(filepath)
         if contenido:
             return contenido
@@ -306,8 +307,8 @@ class SastifaccionView:
         engine = create_engine(DevelopmentConfig.SQLALCHEMY_DATABASE_URI, echo=True)
         connection = engine.connect()
         #
-        satisfaccion_csv = pd.read_csv('encuestas/encuestas-satisfaccion.csv')
-        satisfaccion_csv.to_sql(name='grafico_satisfaccion', con=connection, if_exists='append')
+        # satisfaccion_csv = pd.read_csv('clases/class_graficas/encuestas/encuestas-satisfaccion.csv')
+        # satisfaccion_csv.to_sql(name='grafico_satisfaccion', con=connection, if_exists='append')
         #
         
         preguntas_text = [
@@ -340,19 +341,19 @@ class SastifaccionView:
         
         preguntas = []
         for i in range(10):
-            pregunta_url = GenerarImgG_pastel('Pregunta_'+ str(i+1), '', '', '', satisfaccion)
+            pregunta_url = GenerarImgG_pastel('Pregunta_'+ str(i+1), '', '', '', satisfaccion, 'satisfaccion')
             array = [i+1, pregunta_url, preguntas_text[i], respuestas_text[i]]
             preguntas.append(array)
         
         return {
-            'template': 'graficos/sastifaccion.html',
+            'status': True,
             'preguntas_url': preguntas
         }
 
 class CrecimientoView:
     @staticmethod
     def get_context():
-        filepath = f"json/crecimiento.json"
+        filepath = f"clases/class_graficas/json/crecimiento.json"
         contenido = cargar_contenido(filepath)
         if contenido:
             return contenido
@@ -385,20 +386,20 @@ class CrecimientoView:
         engine = create_engine(DevelopmentConfig.SQLALCHEMY_DATABASE_URI, echo=True)
         connection = engine.connect()
         #
-        crecimiento_csv = pd.read_csv('encuestas/encuestas-crecimiento.csv')
-        crecimiento_csv.to_sql(name='grafico_crecimiento', con=connection, if_exists='append')
+        # crecimiento_csv = pd.read_csv('clases/class_graficas/encuestas/encuestas-crecimiento.csv')
+        # crecimiento_csv.to_sql(name='grafico_crecimiento', con=connection, if_exists='append')
         #
         sql_crecimiento = 'select * from grafico_crecimiento'
         crecimiento = pd.read_sql_query(sql_crecimiento, con=connection)
         
         preguntas = []
         for i in range(10):
-            pregunta_url = GenerarImgG_lineal('Pregunta_'+ str(i+1), '', '', '', crecimiento)
+            pregunta_url = GenerarImgG_lineal('Pregunta_'+ str(i+1), '', '', '', crecimiento, 'crecimiento')
             array = [i+1, pregunta_url, preguntas_text[i], respuestas_text[i]]
             preguntas.append(array)
         
         return {
-            'template': 'graficos/crecimiento.html',
+            'status': True,
             'preguntas_url': preguntas
         }
         
@@ -475,8 +476,9 @@ class BaseDatos:
             'tablas_info': tablas_info
         }
          
-def GenerarImgGrafica(array, title, xlabel, ylabel, viabilidad):
+def GenerarImgGrafica(array, title, xlabel, ylabel, viabilidad, carpet_name):
     conteo_pregunta = viabilidad[array].value_counts()
+    output_dir=f"static/img/graficos/{carpet_name}"
     
     ax = conteo_pregunta.plot(kind='bar', color=['#6DC5D1', '#FFB4C2', '#FCDC94', '#C5FF95'])
     plt.title(title)
@@ -487,17 +489,24 @@ def GenerarImgGrafica(array, title, xlabel, ylabel, viabilidad):
     for p in ax.patches:
         ax.annotate(f'{p.get_height()}', (p.get_x() + p.get_width() / 2., p.get_height()),
                     ha='center', va='center', xytext=(0, 5), textcoords='offset points')
-
+        
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     
     # Convertir el gráfico a imagen en base64
     img = BytesIO()
-    plt.savefig(img, format='png')
+    filename = f"{array}_grafica.png"
+    filepath = os.path.join(output_dir, filename)
+    plt.savefig(filepath, format='png')
     plt.close()
     img.seek(0)
-    return base64.b64encode(img.getvalue()).decode()
+    
+    # return base64.b64encode(img.getvalue()).decode()
+    return filepath
 
-def GenerarImgG_pastel(array, title, xlabel, ylabel, df):
+def GenerarImgG_pastel(array, title, xlabel, ylabel, df, carpet_name):
     conteo_pregunta = df[array].value_counts()
+    output_dir=f"static/img/graficos/{carpet_name}"
     
     # Crear la gráfica de pastel
     plt.figure()
@@ -506,14 +515,22 @@ def GenerarImgG_pastel(array, title, xlabel, ylabel, df):
     
     # Convertir el gráfico a imagen en base64
     img = BytesIO()
-    plt.savefig(img, format='png')
+    # plt.savefig(img, format='png')
+    filename = f"{array}_grafica.png"
+    filepath = os.path.join(output_dir, filename)
+    plt.savefig(filepath, format='png')
     plt.close()
     img.seek(0)
-    return base64.b64encode(img.getvalue()).decode()
+    # return base64.b64encode(img.getvalue()).decode()
+    return filepath
 
-def GenerarImgG_lineal(array, title, xlabel, ylabel, viabilidad):
+def GenerarImgG_lineal(array, title, xlabel, ylabel, viabilidad, carpet_name):
     conteo_pregunta = viabilidad[array].value_counts()
+    # output_dir=f"static/img/graficos/{carpet_name}"
+    # print(carpet_name)    
+    output_dir = os.path.join("static", "img", "graficos", carpet_name)
     
+
     # Convertir los valores del índice a numéricos
     indices_numericos = np_.arange(len(conteo_pregunta))
     
@@ -531,7 +548,12 @@ def GenerarImgG_lineal(array, title, xlabel, ylabel, viabilidad):
     
     # Convertir el gráfico a imagen en base64
     img = BytesIO()
-    plt.savefig(img, format='png')
+    filename = f"{array}_grafica.png"
+    filepath = os.path.join(output_dir, filename)
+    plt.savefig(filepath, format='png')
+    # plt.savefig('img', format='png')
+    
     plt.close()
     img.seek(0)
-    return base64.b64encode(img.getvalue()).decode()
+    # return base64.b64encode(img.getvalue()).decode()
+    return filepath

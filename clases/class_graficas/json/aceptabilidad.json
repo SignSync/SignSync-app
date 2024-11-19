@@ -1,0 +1,117 @@
+{
+    "status": true,
+    "preguntas_url": [
+        [
+            1,
+            "static/img/graficos/aceptabilidad\\Pregunta_1_grafica.png",
+            "\u00bfQu\u00e9 tan probable es que recomiende una aplicaci\u00f3n de gesti\u00f3n de contratos a otros propietarios de PyMEs?",
+            [
+                "a) Muy probable",
+                "b) Probable",
+                "c) Poco probable",
+                "d) Nada probable"
+            ]
+        ],
+        [
+            2,
+            "static/img/graficos/aceptabilidad\\Pregunta_2_grafica.png",
+            "\u00bfCon qu\u00e9 frecuencia revisa y actualiza los contratos en su PyME?",
+            [
+                "a) Diariamente",
+                "b) Semanalmente",
+                "c) Mensualmente",
+                "d) Trimestralmente",
+                "e) Otras"
+            ]
+        ],
+        [
+            3,
+            "static/img/graficos/aceptabilidad\\Pregunta_3_grafica.png",
+            "\u00bfC\u00f3mo eval\u00faa el rendimiento de los contratos en su PyME?",
+            [
+                "a) Seguimiento de cumplimiento de t\u00e9rminos y condiciones",
+                "b) Evaluaci\u00f3n de resultados financieros relacionados",
+                "c) Revisi\u00f3n de la satisfacci\u00f3n del cliente",
+                "d) An\u00e1lisis de riesgos y problemas surgidos",
+                "e) Otro"
+            ]
+        ],
+        [
+            4,
+            "static/img/graficos/aceptabilidad\\Pregunta_4_grafica.png",
+            "\u00bfQu\u00e9 m\u00e9todos utiliza para asegurarse de que se cumplan los plazos y t\u00e9rminos de los contratos?",
+            [
+                "a) Recordatorios manuales",
+                "b) Recordatorios autom\u00e1ticos por correo electr\u00f3nico",
+                "c) Sistema de gesti\u00f3n de proyectos",
+                "d) Otro"
+            ]
+        ],
+        [
+            5,
+            "static/img/graficos/aceptabilidad\\Pregunta_5_grafica.png",
+            "\u00bfC\u00f3mo maneja su PyME la confidencialidad y la seguridad de los contratos?",
+            [
+                "a) Contrase\u00f1as y acceso restringido",
+                "b) Cifrado de documentos",
+                "c) Almacenamiento en servidores seguros",
+                "d) Otro"
+            ]
+        ],
+        [
+            6,
+            "static/img/graficos/aceptabilidad\\Pregunta_6_grafica.png",
+            "\u00bfQu\u00e9 tan satisfecho est\u00e1 con la precisi\u00f3n de los contratos gestionados manualmente?",
+            [
+                "a) Muy satisfecho",
+                "b) Satisfecho",
+                "c) Neutral",
+                "d) Insatisfecho"
+            ]
+        ],
+        [
+            7,
+            "static/img/graficos/aceptabilidad\\Pregunta_7_grafica.png",
+            "\u00bfQu\u00e9 tan importante es para usted tener una visi\u00f3n general clara de todos los contratos activos?",
+            [
+                "a) Muy importante",
+                "b) Importante",
+                "c) Moderadamente importante",
+                "d) Poco importante"
+            ]
+        ],
+        [
+            8,
+            "static/img/graficos/aceptabilidad\\Pregunta_8_grafica.png",
+            "\u00bfQu\u00e9 tan satisfecho est\u00e1 con el tiempo que toma crear y finalizar contratos manualmente?",
+            [
+                "a) Muy satisfecho",
+                "b) Satisfecho",
+                "c) Neutral",
+                "d) Insatisfecho"
+            ]
+        ],
+        [
+            9,
+            "static/img/graficos/aceptabilidad\\Pregunta_9_grafica.png",
+            "\u00bfQu\u00e9 tan f\u00e1cil es para usted encontrar informaci\u00f3n espec\u00edfica en los contratos actuales?",
+            [
+                "a) Muy f\u00e1cil",
+                "b) F\u00e1cil",
+                "c) Moderadamente f\u00e1cil",
+                "d) Dif\u00edcil"
+            ]
+        ],
+        [
+            10,
+            "static/img/graficos/aceptabilidad\\Pregunta_10_grafica.png",
+            ".\u00bfQu\u00e9 tan dispuesto estar\u00eda a cambiar a una soluci\u00f3n digital para la gesti\u00f3n de contratos?",
+            [
+                "a) Muy dispuesto",
+                "b) Dispuesto",
+                "c) Moderadamente dispuesto",
+                "d) Poco dispuesto"
+            ]
+        ]
+    ]
+}
