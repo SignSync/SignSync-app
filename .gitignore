@@ -53,3 +53,6 @@ dist/
 
 # Archivos de Flask
 *.flaskenv
+
+/static/img/graficos
+# /clases/class_graficas/json
