@@ -24,6 +24,21 @@ method: POST
         user_name
 
 /////////EMPRESAS
+Crear empresa -- Crear una empresa mediante idusuario 
+enlace: /api/empresa/createempresa
+method: POST
+    parametros: idusuario, 
+            sector, 
+            correo, 
+            telefono,
+            sitio_web,
+            descripcion 
+            
+    return:
+        ERROR: status, message
+        SUCCESS: status, id_new_empresa
+
+
 Get empresa -- Recuperar la empresa de un usuario
 enlace: api/empresa/getempresa
 method: GET
@@ -36,7 +51,7 @@ method: GET
     Parametros: 
     Return: status, empresas
 
-Editae empresa -- Editar datos de una empresa por id de usuario
+Editar empresa -- Editar datos de una empresa por id de usuario
 enlace: api/empresa/getempresa
 method: GET
     Parametros: 
@@ -151,3 +166,53 @@ method: DELETE
     parametros: idContratista *
     Return: 
         status, message
+
+
+////////////////////////DOCUMENTOS
+Crear documentos - Crear registro de un documento, guardar enlace del documento
+enlace: /api/documentos/creardocumento
+method: POST
+    Parametros: nombre, url, idContrato 
+    return: status, id_new_documento
+
+
+Editar documentos -- 
+enlace: /api/documentos/editardocumento
+method: PUT
+    Parametros: 
+        idDocumento, idContrato, nombre, url
+    Return: 
+        status,  message
+
+Eliminar documento --
+enlace: /api/documentos/deletedocumento
+method: DELETE
+    parametros: idDocumento
+    return: status, message
+
+listar documentos ---
+enlace: /api/documentos/listardocumentos
+method: GET
+    parametros: idContrato
+    Return: status, documentos
+
+
+
+/// //////////////////// 
+Editar perfil ---
+enlace: /api/perfil/editar
+method: PUT
+    parametros: 
+        id_user
+        usuario
+        sexo
+        fecha_nacimiento
+    return: status, message
+
+Cmabiar password: 
+enlace: /api/perfil/cambiarpassword
+method: PUT
+    parametros:
+        id_user
+        contrasena
+        contrasena_new

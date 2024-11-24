@@ -23,12 +23,15 @@ class Cambiar_Contrasena:
             contrasena = datos.get('contrasena')
             contrasena_new = datos.get('contrasena_new')
             
-            if not id_user or not contrasena or not contrasena_new:
+            if not id_user:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del usuario (id_user)"}), 400
+            
+            if not contrasena or not contrasena_new:
+                return jsonify({"status": False, "message": "No se ha enviado los datos necesarios (contrasena_new, contrasena)"}), 400
             
             usuario = Usuario.query.filter_by(id_user = id_user).first()
             if not usuario: 
-                return jsonify({"status": False, "message": f"No se ha encontrado ningua empresa con el id_user: {id_user}"}), 400
+                return jsonify({"status": False, "message": f"No se ha encontrado ningua usuario con el id_user: {id_user}"}), 400
             
             if not check_password_hash(usuario.contrasena, contrasena):
                 return jsonify({"status": False, "message": f"Contraseñas incorrectas"}), 400

@@ -33,7 +33,6 @@ class Editar_Documento:
             if not nombre or not url:
                 return jsonify({"status": False, "message": "Faltan datos obligatorios (nombre, url)"}), 400
             
-            
             documento = Documentos.query.filter_by(idDocumento=idDocumento).first()
             if not documento:
                 return jsonify({"status": False, "message": f"No se ha encontrado ningún documento con el ID {idDocumento}"}), 400
@@ -41,10 +40,10 @@ class Editar_Documento:
             
             documento.nombre = nombre if nombre else documento.nombre
             documento.costo = url if url else url.costo
-            documento.idPaquete = idContrato if idContrato else documento.idContrato 
+            documento.idContrato = idContrato if idContrato else documento.idContrato 
                        
             db.session.commit()
-            data = jsonify({"status": True, "message": "Servicio editado correctamente"}), 201
+            data = jsonify({"status": True, "message": "Documento editado correctamente"}), 201
             
             return data
             

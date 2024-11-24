@@ -1,17 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, session
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-import clases.sign_up
 from config import DevelopmentConfig
-from io import BytesIO
 from models import db, Empresas
 
-import models, locale, base64, os
-from werkzeug.security import generate_password_hash, check_password_hash
+import locale
 
-import matplotlib.pyplot as ptl
-import numpy as np
-
-import clases
 from clases.sign_up import Sign_up
 from clases.class_sign_in import Sign_in
 
@@ -19,10 +12,9 @@ from clases.class_contratos import class_editar_contrato, class_crear_contrato, 
 from clases.class_contratistas import class_getContratistas, class_createContratistas,class_deleteContratistas,class_editContratistas, class_getContratista
 from clases.class_empresa import class_getEmpresa, class_listarEmpresas , class_crearEmpresa, class_deleteEmpresa, class_editEmpresa
 from clases.class_paquetes import class_crearPaquete, class_listarPaquetes, class_editarPaquete, class_eliminarPaquete
-
+from clases.class_perfil import class_changepassword, class_editperfil
 from clases.class_servicios import class_crearServicio, class_editarServicio, class_eliminarServicio, class_listarServicios
 from clases.class_documentos import class_crearDocumento, class_editarDocumento, class_listarDocumento, class_eliminarDocumento
-
 from clases.class_graficas import routes
 
 app = Flask(__name__)
@@ -384,7 +376,7 @@ def eliminar_servicio():
 
 # //////////////////////DOCUMENTOS
 
-@app.route('/api/documentos/documento', methods=['POST'])
+@app.route('/api/documentos/creardocumento', methods=['POST'])
 def registrar_documento():
     try:
         datos = request.get_json()
@@ -397,19 +389,18 @@ def registrar_documento():
         return jsonify({"error": str(e)}), 500  # Devolver el error
     
     
-@app.route('/api/documentos/documento', methods=['PUT'])
+@app.route('/api/documentos/editardocumento', methods=['PUT'])
 def editar_documento():
     try:
         datos = request.get_json()
-        editar= class_editarServicio.Editar_Servicio()
+        editar= class_editarDocumento.Editar_Documento()
         data = editar.Editar(datos)
-        # return data
-        pass
+        return data
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500  # Devolver el error
     
-@app.route('/api/documentos/documento', methods=['GET'])
+@app.route('/api/documentos/listardocumentos', methods=['GET'])
 def listar_documentos():
     try:
         idContrato = request.args.get('idContrato')
@@ -420,7 +411,7 @@ def listar_documentos():
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500  # Devolver el error
 
-@app.route('/api/documentos/documento', methods=['DELETE'])
+@app.route('/api/documentos/deletedocumento', methods=['DELETE'])
 def eliminar_documento():
     try:
         datos = request.get_json()
@@ -471,7 +462,31 @@ def dashboard():
 
 
     
+#/////////////// PERFIL
+@app.route('/api/perfil/editar', methods=['PUT'])
+def editar_perfil():
+    try:
+        datos = request.get_json()
+        editar= class_editperfil.Edit_Perfil()
+        data = editar.Edit(datos)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
     
+@app.route('/api/perfil/cambiarpassword', methods=['PUT'])
+def cambiar_password():
+    try:
+        datos = request.get_json()
+        editar= class_changepassword.Cambiar_Contrasena()
+        data = editar.Change(datos)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+
+
     # Obtener el parámetro 'grafico' del GET
     
     #return render_template('dashboard.html', **context, form = create_form)

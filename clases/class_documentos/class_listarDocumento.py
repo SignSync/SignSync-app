@@ -10,12 +10,12 @@ class Listar_Documentos:
         self.idUsuario = ''
             
     '''
-    @param idUsuario
+    @param idContrato
     @return 
         ERROR
             status, message
         NO ERROR
-            status, id_new_empresa
+            status, documentos
     '''
     def Listar(self, idContrato):
         try:            

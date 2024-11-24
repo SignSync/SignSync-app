@@ -101,3 +101,12 @@ class Respuestas(db.Model):
     
 
     
+    
+    
+    #///////////////////////////////////////BACK
+# class Clientes(db.Model):
+#     __bind_key__ = 'secondary_db'  # Asociar este modelo a la base de datos secundaria
+#     __tablename__ = 'productos'
+#     id = db.Column(db.Integer, primary_key=True)
+#     nombre = db.Column(db.String(100))
+#     precio = db.Column(db.Float)    

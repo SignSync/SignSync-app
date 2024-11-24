@@ -15,7 +15,7 @@ class Edit_Perfil:
         ERROR
             status, message
         NO ERROR
-            status, empresa
+            status, message
     '''
     def Edit(self, datos):
         try:
@@ -27,14 +27,14 @@ class Edit_Perfil:
             if not id_user:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del usuario (id_user)"}), 400
             
-            usuario = Usuario.query.filter_by(id_user = id_user).first()
-            if not usuario: 
+            usuario_db = Usuario.query.filter_by(id_user = id_user).first()
+            if not usuario_db: 
                 return jsonify({"status": False, "message": f"No se ha encontrado ningua empresa con el id_user: {id_user}"}), 400
         
     
-            usuario.usuario = usuario if usuario else usuario.usuario
-            usuario.sexo = sexo if sexo else usuario.sexo
-            usuario.fecha_nacimiento = fecha_nacimiento if fecha_nacimiento else usuario.fecha_nacimiento
+            usuario_db.usuario = usuario if usuario else usuario_db.usuario
+            usuario_db.sexo = sexo if sexo else usuario_db.sexo
+            usuario_db.fecha_nacimiento = fecha_nacimiento if fecha_nacimiento else usuario_db.fecha_nacimiento
             
             db.session.commit()
             
