@@ -12,7 +12,7 @@ from clases.class_contratos import class_editar_contrato, class_crear_contrato, 
 from clases.class_contratistas import class_getContratistas, class_createContratistas,class_deleteContratistas,class_editContratistas, class_getContratista
 from clases.class_empresa import class_getEmpresa, class_listarEmpresas , class_crearEmpresa, class_deleteEmpresa, class_editEmpresa
 from clases.class_paquetes import class_crearPaquete, class_listarPaquetes, class_editarPaquete, class_eliminarPaquete
-from clases.class_perfil import class_changepassword, class_editperfil
+
 from clases.class_servicios import class_crearServicio, class_editarServicio, class_eliminarServicio, class_listarServicios
 from clases.class_documentos import class_crearDocumento, class_editarDocumento, class_listarDocumento, class_eliminarDocumento
 from clases.class_graficas import routes
@@ -324,8 +324,6 @@ def eliminar_paquete():
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500  # Devolver el error
     
-
-
 # ///////////////////////////SERVICIOS
 @app.route('/api/servicios/servicio', methods=['POST'])
 def crear_servicio():
@@ -445,7 +443,6 @@ def eliminar_documento():
 
 
 #/////////////////////////GRAFICAS
-
 @app.route('/api/graficos', methods=['GET'])
 def dashboard():
     try:
@@ -463,6 +460,8 @@ def dashboard():
 
     
 #/////////////// PERFIL
+from clases.class_perfil import class_changepassword, class_editperfil, class_listarUsers, class_deleteUser
+
 @app.route('/api/perfil/editar', methods=['PUT'])
 def editar_perfil():
     try:
@@ -485,12 +484,51 @@ def cambiar_password():
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500
 
-
-
-    # Obtener el parámetro 'grafico' del GET
+@app.route('/api/perfil/listar', methods=['GET'])
+def listar_usuarios():
+    try:
+        obj = class_listarUsers.Listar_Usuarios()
+        data = obj.Listar()
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
     
-    #return render_template('dashboard.html', **context, form = create_form)
+    
+@app.route('/api/perfil/deleteuser', methods=['DELETE'])
+def delete_usuarios():
+    try:
+        data = request.get_json()
+        id_user = data.get('id_user')
+        print(id_user)
+        obj = class_deleteUser.Delete_Usuarios()
+        data = obj.Detele(id_user)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
 
+
+#/////////////////////////////BASE DE DATOS --- DEV
+from clases.class_bd import class_listarTablas
+
+
+@app.route('/api/bd/listartablas', methods=['GET'])
+def listar_tablas():
+    try:
+        obj = class_listarTablas.Listar_Tablas()
+        data = obj.Listar()
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+
+
+    
 if __name__ == '__main__':
     db.init_app(app)
     with app.app_context():

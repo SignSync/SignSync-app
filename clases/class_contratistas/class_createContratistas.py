@@ -30,7 +30,7 @@ class Create_Contratistas:
             ocupacion = datos.get('ocupacion')
             domicilio = datos.get('domicilio')
             telefono = datos.get('telefono')
-            id_empresa = datos.get('idEmpresa')
+            idEmpresa = datos.get('id_empresa')
             id_usuario = datos.get('id_usuario')
             
             if not idEmpresa:
@@ -42,7 +42,7 @@ class Create_Contratistas:
                 idEmpresa = empresa.idEmpresa
             
             
-            if not nombre or not edad or not ocupacion or not id_empresa:
+            if not nombre or not edad or not ocupacion or not idEmpresa:
                 return jsonify({"status": False, "message": "No se han enviado todos los datos obligatorios"}), 400
         
             newContratista = Contratistas(
@@ -51,7 +51,7 @@ class Create_Contratistas:
                 ocupacion = ocupacion,
                 domicilio = domicilio,
                 telefono = telefono,
-                id_empresa = id_empresa
+                id_empresa = idEmpresa
             )
             db.session.add(newContratista)
             db.session.commit()

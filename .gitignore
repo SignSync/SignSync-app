@@ -56,3 +56,5 @@ dist/
 
 /static/img/graficos
 # /clases/class_graficas/json
+
+/json__
