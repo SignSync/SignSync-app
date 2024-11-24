@@ -28,32 +28,30 @@ class Sign_up:
     
     def RegistrarUser(self, datos):
         try:
-            #CHECA SI HAY DATOS 
             if not datos or 'usuario' not in datos or 'correo' not in datos or 'contrasena' not in datos:
-                return jsonify({"status": False, "error": "Faltan datos"}), 400
-            
+                return jsonify({"status": False, "error": "Faltan datos obligatorios"}), 400
+
             usuario = datos['usuario']
             correo = datos['correo']
             contrasena = datos['contrasena']
-            
-            usuarios = models.Usuario.query.all()
-            for usuario in usuarios:
-                if usuario.correo == correo:
-                     return jsonify({"status": False, "message": "El correo ya esta registrado"}), 400
-            
+
+            # Verificar si el correo ya está registrado
+            usuario_existente = models.Usuario.query.filter_by(correo=correo).first()
+            if usuario_existente:
+                return jsonify({"status": False, "message": "El correo ya está registrado"}), 400
+
+            # Crear un nuevo usuario
             hashed_password = generate_password_hash(contrasena)
-            newUser = models.Usuario(usuario = usuario, correo = correo, contrasena=hashed_password)
-            
+            newUser = models.Usuario(usuario=usuario, correo=correo, contrasena=hashed_password)
+
             db.session.add(newUser)
             db.session.commit()
             id_nuevo_user = newUser.id_user
-            
-            data = jsonify({"status": True, "id": id_nuevo_user}), 201
-            
-            return data
-            
+
+            return jsonify({"status": True, "id": id_nuevo_user}), 201
+
         except Exception as e:
             db.session.rollback()  # Hacer rollback si ocurre un error
-            return jsonify({"error": str(e)}), 500  # Devolver el error
+            return jsonify({"error": str(e)}), 500
     
     
