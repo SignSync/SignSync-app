@@ -460,7 +460,7 @@ def dashboard():
 
     
 #/////////////// PERFIL
-from clases.class_perfil import class_changepassword, class_editperfil, class_listarUsers, class_deleteUser
+from clases.class_perfil import class_changepassword, class_editperfil, class_listarUsers, class_deleteUser, class_getUser
 
 @app.route('/api/perfil/editar', methods=['PUT'])
 def editar_perfil():
@@ -489,6 +489,17 @@ def listar_usuarios():
     try:
         obj = class_listarUsers.Listar_Usuarios()
         data = obj.Listar()
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/perfil/getuser', methods=['GET'])
+def get_usuario():
+    try:
+        id_user = request.args.get('id_user')
+        obj = class_getUser.Get_Usuarios()
+        data = obj.Get(id_user)
         return data
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error

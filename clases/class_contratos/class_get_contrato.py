@@ -3,7 +3,7 @@ import models
 from models import db
 import datetime
 
-from models import Contratos, Empresas
+from models import Contratos, ContratosContratistas
 class Get_Contrato:
     #Declaración de contructor de la clase
     def __init__(self) -> None:
@@ -22,6 +22,13 @@ class Get_Contrato:
             if not contrato: 
                 return jsonify({"status": False, "message": f"No se ha encontrado contratos con el idEmpresa: {idContrato}"}), 400
             
+            idContratista = None
+            contratos_contratistas = ContratosContratistas.query.filter_by(idContrato = idContrato).first()
+            if contratos_contratistas:
+                idContratista = contratos_contratistas.idContratista
+            
+            
+            print(idContratista)
             contratos_alldata = []
         
             
@@ -30,13 +37,14 @@ class Get_Contrato:
             dias_restantes = (fecha_entrega - datetime.datetime.now().date()).days
                 
             contrato_data = {
-                "idContrato": contrato.idContrato,  # Asegúrate de reemplazar 'id' con el nombre correcto de la columna primaria
+                "idContrato": contrato.idContrato,  
                 "nombre": contrato.nombre,
                 "tipo": contrato.tipo,
                 "lugar": contrato.lugar,
                 "fecha_inicio": contrato.fecha_inicio.isoformat(),  # Convertir fecha a string
                 "fecha_entrega": contrato.fecha_entrega.isoformat(),  # Convertir fecha a string
                 "color": contrato.color,
+                "idContratista": idContratista,
                 "id_empresa": contrato.id_empresa
             }
             
