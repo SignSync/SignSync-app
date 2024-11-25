@@ -31,9 +31,9 @@ class Sign_up:
             if not datos or 'usuario' not in datos or 'correo' not in datos or 'contrasena' not in datos:
                 return jsonify({"status": False, "error": "Faltan datos obligatorios"}), 400
 
-            usuario = datos['usuario']
-            correo = datos['correo']
-            contrasena = datos['contrasena']
+            usuario = datos.get('usuario')
+            correo = datos.get('correo')
+            contrasena = datos.get('contrasena')
 
             # Verificar si el correo ya está registrado
             usuario_existente = models.Usuario.query.filter_by(correo=correo).first()

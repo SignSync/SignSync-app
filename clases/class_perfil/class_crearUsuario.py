@@ -1,10 +1,11 @@
 from flask import jsonify
 import models
 from models import db
+from werkzeug.security import generate_password_hash
 
 from models import Usuario
 
-class Edit_Perfil:
+class Create_User:
     #Declaración de contructor de la clase
     def __init__(self) -> None:
         self.idUsuario = ''
@@ -17,31 +18,32 @@ class Edit_Perfil:
         NO ERROR
             status, message
     '''
-    def Edit(self, datos):
+    def Create(self, datos):
         try:
-            id_user = datos.get('idUsuario')
             usuario = datos.get('usuario')
             correo = datos.get('correo')
+            contrasena = datos.get('contrasena')
             sexo = datos.get('sexo')
             fecha_nacimiento = datos.get('fecha_nacimiento')
             
-            if not id_user:
-                return jsonify({"status": False, "message": "No se ha enviado el ID del usuario (idUsuario)"}), 400
+            if not usuario or not correo or not contrasena:
+                return jsonify({"status": False, "message": "No se ha campos obligatorios (usuario, correo, contrasena)"}), 400
             
-            usuario_db = Usuario.query.filter_by(id_user = id_user).first()
-            if not usuario_db: 
-                return jsonify({"status": False, "message": f"No se ha encontrado ningua empresa con el idUsuario: {id_user}"}), 400
-        
-    
-            usuario_db.usuario = usuario if usuario else usuario_db.usuario
-            usuario_db.sexo = sexo if sexo else usuario_db.sexo
-            usuario_db.correo= correo if correo else usuario_db.correo
-            usuario_db.fecha_nacimiento = fecha_nacimiento if fecha_nacimiento else usuario_db.fecha_nacimiento
+            hashed_password = generate_password_hash(contrasena)
             
+            newUser = Usuario(
+                usuario = usuario,
+                correo = correo, 
+                contrasena = hashed_password,
+                sexo = sexo,
+                fecha_nacimiento = fecha_nacimiento
+            )
+            
+            db.session.add(newUser)
             db.session.commit()
             
-        
-            data = jsonify({"status": True, "message": "Usurio editado correctamente"}), 201
+            id_new_usuario = newUser.id_user
+            data = jsonify({"status": True, "id_new_usuario": id_new_usuario}), 201
             
             return data
             

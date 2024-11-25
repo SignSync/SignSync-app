@@ -8,7 +8,7 @@ import locale
 from clases.sign_up import Sign_up
 from clases.class_sign_in import Sign_in
 
-from clases.class_contratos import class_editar_contrato, class_crear_contrato, class_eliminar_contrato, class_listar_contratos, class_get_contrato
+from clases.class_contratos import class_editar_contrato, class_crear_contrato, class_eliminar_contrato, class_listar_contratos, class_get_contrato, class_listar_contratos_ALL
 from clases.class_contratistas import class_getContratistas, class_createContratistas,class_deleteContratistas,class_editContratistas, class_getContratista
 from clases.class_empresa import class_getEmpresa, class_listarEmpresas , class_crearEmpresa, class_deleteEmpresa, class_editEmpresa
 from clases.class_paquetes import class_crearPaquete, class_listarPaquetes, class_editarPaquete, class_eliminarPaquete
@@ -61,8 +61,10 @@ def login():
 def get_Empresa():
     try:
         id_usuario = request.args.get('id_usuario')
+        idEmpresa = request.args.get('idEmpresa')
+        
         get_empresa = class_getEmpresa.Get_Empresa()
-        data = get_empresa.Get(id_usuario)
+        data = get_empresa.Get(id_usuario, idEmpresa)
         
         return data
         
@@ -222,6 +224,17 @@ def listar_contratos():
         
         listar_contrato = class_listar_contratos.Listar_Contrato()
         data = listar_contrato.Listar(idEmpresa)
+        return data
+    
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+@app.route('/api/contratos/getcontratosALL', methods=['GET'])
+def listar_contratos_ALL():
+    try:
+        obj = class_listar_contratos_ALL.Listar_Contratos_ALL()
+        data = obj.Listar()
         return data
     
     except Exception as e:
@@ -460,7 +473,18 @@ def dashboard():
 
     
 #/////////////// PERFIL
-from clases.class_perfil import class_changepassword, class_editperfil, class_listarUsers, class_deleteUser, class_getUser
+from clases.class_perfil import class_changepassword, class_editperfil, class_listarUsers, class_deleteUser, class_getUser, class_crearUsuario
+
+@app.route('/api/perfil/createUser', methods=['POST'])
+def create_user():
+    try:
+        datos = request.get_json()
+        obj = class_crearUsuario.Create_User()
+        data = obj.Create(datos)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/perfil/editar', methods=['PUT'])
 def editar_perfil():

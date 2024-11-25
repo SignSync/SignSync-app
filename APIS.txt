@@ -85,6 +85,13 @@ method: GET
     Parametros: idContrato *
     Return: status, contrato, controato_inicio, dias_restantes
 
+
+Listar contratos ALL -- Listar todos los contratos registrados
+enlace: api/contratos/getcontratosALL
+method: GET
+    Parametros: 
+    Return: status, contratos
+
 Editar contrato -- Editar contrato por idContrato
 enlace: /api/contratos/editcontrato
 method: PUT
