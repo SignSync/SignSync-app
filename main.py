@@ -63,6 +63,9 @@ def get_Empresa():
         id_usuario = request.args.get('id_usuario')
         idEmpresa = request.args.get('idEmpresa')
         
+        if not idEmpresa: 
+            idEmpresa = request.args.get('id_empresa')
+        
         get_empresa = class_getEmpresa.Get_Empresa()
         data = get_empresa.Get(id_usuario, idEmpresa)
         
@@ -134,6 +137,8 @@ def listar_contratistas():
         idEmpresa = request.args.get('idEmpresa')
         id_usuario = request.args.get('id_usuario')
             
+        if not idEmpresa:
+            idEmpresa = request.args.get('id_empresa')
         if not idEmpresa:
             if not id_usuario:
                 return jsonify({"status": False, "message": "No se ha enviado el ID de la empresa (idEmpresa) ni ID del usuario (id_usuario)"}), 400
@@ -213,6 +218,9 @@ def listar_contratos():
     try:
         idEmpresa = request.args.get('idEmpresa')
         id_usuario = request.args.get('id_usuario')
+        
+        if not idEmpresa: 
+            idEmpresa = request.args.get('id_empresa')
         
         if not idEmpresa:
             if not id_usuario:
