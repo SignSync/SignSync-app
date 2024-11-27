@@ -36,6 +36,8 @@ class Edit_Contratistas:
             
             
             if not idContratista:
+                idContratista = datos.get('id_contratista')
+            if not idContratista:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contratista (idContratista)"}), 400
             
             if not nombre or not edad or not ocupacion:

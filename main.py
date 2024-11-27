@@ -11,7 +11,7 @@ from clases.class_sign_in import Sign_in
 from clases.class_contratos import class_editar_contrato, class_crear_contrato, class_eliminar_contrato, class_listar_contratos, class_get_contrato, class_listar_contratos_ALL
 from clases.class_contratistas import class_getContratistas, class_createContratistas,class_deleteContratistas,class_editContratistas, class_getContratista, class_listarContratistas
 from clases.class_empresa import class_getEmpresa, class_listarEmpresas , class_crearEmpresa, class_deleteEmpresa, class_editEmpresa
-from clases.class_paquetes import class_crearPaquete, class_listarPaquetes, class_editarPaquete, class_eliminarPaquete
+from clases.class_paquetes import class_crearPaquete, class_listarPaquetes, class_editarPaquete, class_eliminarPaquete, class_listarPaquetes_all
 
 from clases.class_servicios import class_crearServicio, class_editarServicio, class_eliminarServicio, class_listarServicios
 from clases.class_documentos import class_crearDocumento, class_editarDocumento, class_listarDocumento, class_eliminarDocumento
@@ -171,6 +171,9 @@ def listar_contratistas_ALL():
 def get_contratistas():
     try:
         idContratista = request.args.get('idContratista')
+        
+        if not idContratista:
+            idContratista = request.args.get('id_contratista')
             
         print(idContratista)
         obj_contratistas = class_getContratista.Get_Contratista()
@@ -335,11 +338,21 @@ def editar_paquete():
         return jsonify({"error": str(e)}), 500  # Devolver el error
     
 @app.route('/api/paquetes/paquete', methods=['GET'])
-def listar_paquete():
+def get_paquete():
     try:
         idContrato = request.args.get('idContrato')
         listar = class_listarPaquetes.Listar_Paquete()
         data = listar.Listar(idContrato)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+@app.route('/api/paquetes/listarpaquetes', methods=['GET'])
+def listar_paquetes():
+    try:
+        listar = class_listarPaquetes_all.Listar_Paquete()
+        data = listar.Listar()
         return data
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error
