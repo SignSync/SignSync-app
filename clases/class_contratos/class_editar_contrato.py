@@ -47,8 +47,12 @@ class Editar_Contrato:
             idContratista = datos.get('idContratista')
             
             if not id_contrato: 
+                id_contrato = datos.get('idContrato')
+            if not id_contrato: 
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contrato (id_contrato)"}), 400
             
+            if not idContratista: 
+                 idContratista = datos.get('id_contratista')
             if not idContratista: 
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contratista (idContratista)"}), 400
             

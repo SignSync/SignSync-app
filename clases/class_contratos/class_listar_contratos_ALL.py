@@ -3,7 +3,7 @@ import models
 from models import db
 import datetime
 
-from models import Contratos, Empresas
+from models import Contratos, ContratosContratistas
 class Listar_Contratos_ALL:
     #Declaración de contructor de la clase
     def __init__(self) -> None:
@@ -18,8 +18,15 @@ class Listar_Contratos_ALL:
             contratos = Contratos.query.all()
             if not contratos: 
                 return jsonify({"status": False, "message": "No se ha encontrado contratos"}), 400
-            contratos_data = [
-                {
+            
+            contratos__ = []
+            for contrato in contratos:
+                idContratista = None
+                contratos_contratistas = ContratosContratistas.query.filter_by(idContrato = contrato.idContrato).first()
+                if contratos_contratistas:
+                    idContratista = contratos_contratistas.idContratista
+                    
+                contratos_data = {
                     "idContrato": contrato.idContrato,  # Asegúrate de reemplazar 'id' con el nombre correcto de la columna primaria
                     "nombre": contrato.nombre,
                     "tipo": contrato.tipo,
@@ -27,14 +34,14 @@ class Listar_Contratos_ALL:
                     "fecha_inicio": contrato.fecha_inicio.isoformat(),  # Convertir fecha a string
                     "fecha_entrega": contrato.fecha_entrega.isoformat(),  # Convertir fecha a string
                     "color": contrato.color,
-                    "id_empresa": contrato.id_empresa
+                    "id_empresa": contrato.id_empresa,
+                    "idContratista": idContratista
                 }
-                for contrato in contratos
-            ]
-        
+                
+                contratos__.append(contratos_data)
             
             
-            data = jsonify({"status": True, "contratos": contratos_data}), 201
+            data = jsonify({"status": True, "contratos": contratos__}), 201
             
             return data
             

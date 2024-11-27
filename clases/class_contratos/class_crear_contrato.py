@@ -44,6 +44,8 @@ class Crear_Contrato:
             
             if not idEmpresa: 
                 idEmpresa = datos.get('id_empresa')
+            if not idContratista:
+                idContratista = datos.get('id_contratista')
             if not idContratista: 
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contratista (idContratista)"}), 400
             

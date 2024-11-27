@@ -27,15 +27,15 @@ class Listar_Paquete:
             if not paquetes:
                 return jsonify({"status": False, "message": f"No se han encontrado paquetes con el ID contrato: {idContrato}"}), 200
             
-            paquetes_data = {
+            paquetes_data = [
                 { 
                     "idPaquete": paquete.idPaquete,
                     "nombre": paquete.nombre,
-                    "idContrato": paquete.idContrato,
-                    
+                    "costo": paquetes.costo,
+                    "idContrato": paquete.idContrato, 
                 }
                 for paquete in paquetes
-            }
+            ]
             
             data = jsonify({"status": True, "paquetes": paquetes_data}), 201
             

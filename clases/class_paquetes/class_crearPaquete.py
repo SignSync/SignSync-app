@@ -20,16 +20,18 @@ class Crear_Paquete:
     def Crear(self, datos):
         try:
             nombre = datos.get('nombre')
+            costo = datos.get('costo')
             idContrato = datos.get('idContrato')
             
             if not idContrato:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contrato (idContrato)"}), 400
             
-            if not nombre:
-                return jsonify({"status": False, "message": "Faltan datos obligatorios (nombre, sector, telefono o correo)"}), 400
+            if not nombre or not costo:
+                return jsonify({"status": False, "message": "Faltan datos obligatorios (nombre, costo)"}), 400
             
             newPaquete = Paquetes(
                 nombre=nombre,
+                costo=costo,
                 idContrato=idContrato
             )
             db.session.add(newPaquete)
