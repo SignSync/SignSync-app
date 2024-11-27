@@ -65,8 +65,8 @@ class Paquetes(db.Model):
     __tablename__ = 'Paquetes'
     idPaquete = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
+    costo = db.Column(db.Float, nullable=False)
     idContrato = db.Column(db.Integer, db.ForeignKey('Contratos.idContrato'), nullable=False)
-    servicios = db.relationship('Servicios', backref='paquete', cascade="all, delete-orphan")
     
     
 class Servicios(db.Model):

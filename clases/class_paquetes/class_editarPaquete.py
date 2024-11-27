@@ -21,6 +21,7 @@ class Editar_Paquete:
         try:
             idPaquete = datos.get('idPaquete')
             nombre = datos.get('nombre')
+            costo = datos.get('costo')
             idContrato = datos.get('idContrato')
             
             if not idPaquete:
@@ -29,12 +30,13 @@ class Editar_Paquete:
             if not idContrato:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contrato (idContrato)"}), 400
             
-            if not nombre:
-                return jsonify({"status": False, "message": "Faltan datos obligatorios (nombre)"}), 400
+            if not nombre or not costo:
+                return jsonify({"status": False, "message": "Faltan datos obligatorios (nombre, costo)"}), 400
             
             
             paquete = Paquetes.query.filter_by(idPaquete=idPaquete).first()
             paquete.nombre = nombre if nombre else paquete.nombre
+            paquete.costo = costo if costo else paquete.costo
             paquete.idContrato = idContrato if idContrato else paquete.idContrato
             
             db.session.commit()
