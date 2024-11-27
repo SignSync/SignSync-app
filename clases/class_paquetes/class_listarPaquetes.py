@@ -25,13 +25,13 @@ class Listar_Paquete:
             paquetes = Paquetes.query.filter_by(idContrato=idContrato).all()
             
             if not paquetes:
-                return jsonify({"status": False, "message": f"No se han encontrado paquetes con el ID contrato: {idContrato}"}), 200
+                return jsonify({"status": False, "message": f"No se han encontrado paquetes con el ID contrato: {idContrato}"}), 400
             
             paquetes_data = [
                 { 
                     "idPaquete": paquete.idPaquete,
                     "nombre": paquete.nombre,
-                    "costo": paquetes.costo,
+                    "costo": paquete.costo,
                     "idContrato": paquete.idContrato, 
                 }
                 for paquete in paquetes

@@ -4,7 +4,7 @@ from models import db
 
 from models import Paquetes
 
-class Listar_Paquete:
+class Get_Paquete:
     #Declaración de contructor de la clase
     def __init__(self) -> None:
         self.idUsuario = ''
@@ -17,12 +17,15 @@ class Listar_Paquete:
         NO ERROR
             status, id_new_empresa
     '''
-    def Listar(self):
+    def Get(self, idPaquete):
         try:            
-            paquetes = Paquetes.query.all()
+            if not idPaquete:
+                return jsonify({"status": False, "message": "No se ha enviado el ID del paquete (idPaquete)"}), 400
             
-            if not paquetes:
-                return jsonify({"status": False, "message": f"No se han encontrado paquetes."}), 400
+            paquete = Paquetes.query.filter_by(idPaquete=idPaquete).first()
+            
+            if not paquete:
+                return jsonify({"status": False, "message": f"No se han encontrado paquetes con el ID paquete: {idPaquete}"}), 400
             
             paquetes_data = [
                 { 
@@ -31,10 +34,9 @@ class Listar_Paquete:
                     "costo": paquete.costo,
                     "idContrato": paquete.idContrato, 
                 }
-                for paquete in paquetes
             ]
             
-            data = jsonify({"status": True, "paquetes": paquetes_data}), 201
+            data = jsonify({"status": True, "paquete": paquetes_data}), 201
             
             return data
             

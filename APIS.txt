@@ -223,3 +223,66 @@ method: PUT
         id_user
         contrasena
         contrasena_new
+
+
+
+
+
+
+
+
+
+
+///////////////PAQUETES
+Crear Paquete -
+enlace: /api/servicios/servicio 
+method: POST
+    parametros:
+        nombre
+        costo
+        idContrato
+    return 
+        status, id_new_paquete 
+
+Editar Paquete -
+enlace: /api/servicios/servicio 
+method: PUT
+    parametros:
+        idPaquete ***
+        nombre
+        costo
+        idContrato 
+    return 
+        status, message 
+
+Delete Paquete -
+enlace: /api/servicios/servicio 
+method: DELETE
+    parametros:
+        idPaquete ***
+    return 
+        status, message 
+
+get Paquete -- recuperar un paquete por su ID
+enlace: /api/servicios/servicio 
+method: GET
+    parametros:
+        idPaquete***
+    return:
+        status, paquete
+
+Listar Paquetes - listar por Contrato
+enlace: /api/paquetes/paquetescontrato
+method: GET
+    parametros:
+        idContrato || id_contrato ***
+    return 
+        status, paquetes 
+
+
+Listar Paquetes - listar todos los paquetes en general
+enlace: /api/paquetes/listarpaquetes
+method: GET
+    parametros:
+    return 
+        status, paquetes 

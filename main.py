@@ -11,7 +11,7 @@ from clases.class_sign_in import Sign_in
 from clases.class_contratos import class_editar_contrato, class_crear_contrato, class_eliminar_contrato, class_listar_contratos, class_get_contrato, class_listar_contratos_ALL
 from clases.class_contratistas import class_getContratistas, class_createContratistas,class_deleteContratistas,class_editContratistas, class_getContratista, class_listarContratistas
 from clases.class_empresa import class_getEmpresa, class_listarEmpresas , class_crearEmpresa, class_deleteEmpresa, class_editEmpresa
-from clases.class_paquetes import class_crearPaquete, class_listarPaquetes, class_editarPaquete, class_eliminarPaquete, class_listarPaquetes_all
+from clases.class_paquetes import class_crearPaquete, class_listarPaquetes, class_editarPaquete, class_eliminarPaquete, class_listarPaquetes_all, class_getPaquete
 
 from clases.class_servicios import class_crearServicio, class_editarServicio, class_eliminarServicio, class_listarServicios
 from clases.class_documentos import class_crearDocumento, class_editarDocumento, class_listarDocumento, class_eliminarDocumento
@@ -319,7 +319,7 @@ def crear_paquete():
     try:
         datos = request.get_json()
         obj_crear = class_crearPaquete.Crear_Paquete()
-        data = obj_crear.def_crear_contrato(datos)
+        data = obj_crear.Crear(datos)
         return data
     
     except Exception as e:
@@ -340,7 +340,20 @@ def editar_paquete():
 @app.route('/api/paquetes/paquete', methods=['GET'])
 def get_paquete():
     try:
+        idPaquete = request.args.get('idPaquete')
+        listar = class_getPaquete.Get_Paquete()
+        data = listar.Get(idPaquete)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+@app.route('/api/paquetes/paquetescontrato', methods=['GET'])
+def listar_paquete_contrato():
+    try:
         idContrato = request.args.get('idContrato')
+        if not idContrato:
+            idContrato = request.args.get('id_contrato')
         listar = class_listarPaquetes.Listar_Paquete()
         data = listar.Listar(idContrato)
         return data
