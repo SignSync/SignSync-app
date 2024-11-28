@@ -3,7 +3,7 @@ from flask_cors import CORS
 from config import DevelopmentConfig
 from models import db, Empresas
 
-import locale
+import locale, os
 
 from clases.sign_up import Sign_up
 from clases.class_sign_in import Sign_in
@@ -14,10 +14,15 @@ from clases.class_empresa import class_getEmpresa, class_listarEmpresas , class_
 from clases.class_paquetes import class_crearPaquete, class_listarPaquetes, class_editarPaquete, class_eliminarPaquete, class_listarPaquetes_all, class_getPaquete
 
 from clases.class_servicios import class_crearServicio, class_editarServicio, class_eliminarServicio, class_listarServicios
-from clases.class_documentos import class_crearDocumento, class_editarDocumento, class_listarDocumento, class_eliminarDocumento
+from clases.class_documentos import class_crearDocumento, class_editarDocumento, class_listarDocumento, class_eliminarDocumento, class_listarDocumentos_All, class_getDocumento
 from clases.class_graficas import routes
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
 app.config.from_object(DevelopmentConfig)
 locale.setlocale(locale.LC_TIME, 'es_ES')
@@ -432,12 +437,26 @@ def eliminar_servicio():
 
 # //////////////////////DOCUMENTOS
 
+
+
 @app.route('/api/documentos/creardocumento', methods=['POST'])
 def registrar_documento():
     try:
-        datos = request.get_json()
+        # datos = request.get_json()
+        nombre = request.form.get('nombre')
+        id_contrato = request.form.get('idContrato')
+
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({"status": False, 'message': 'No selected file'}), 400
+        
+        if file:
+            # Guardar archivo en la carpeta de uploads
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(file_path)
+        
         obj_crear = class_crearDocumento.Crear_Documento()
-        data = obj_crear.Crear(datos)
+        data = obj_crear.Crear(nombre, id_contrato, file_path)
         return data
     
     except Exception as e:
@@ -448,9 +467,22 @@ def registrar_documento():
 @app.route('/api/documentos/editardocumento', methods=['PUT'])
 def editar_documento():
     try:
-        datos = request.get_json()
+        idDocumento = request.form.get('idDocumento')
+        nombre = request.form.get('nombre')
+        id_contrato = request.form.get('idContrato')
+        
+        if not idDocumento or not nombre or not id_contrato:
+            return jsonify({"status": False, "message": "Datos incompletos"}), 400
+
+        file_path = None
+        file = request.files.get('file')  # Usa get para evitar errores si no existe
+        if file and file.filename != '':
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(file_path)
+        print(file_path)
+        
         editar= class_editarDocumento.Editar_Documento()
-        data = editar.Editar(datos)
+        data = editar.Editar(idDocumento, nombre, id_contrato, file_path)
         return data
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error
@@ -462,6 +494,27 @@ def listar_documentos():
         idContrato = request.args.get('idContrato')
         listar = class_listarDocumento.Listar_Documentos()
         data = listar.Listar(idContrato)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+@app.route('/api/documentos/getdocumento', methods=['GET'])
+def get_documento():
+    try:
+        idDocumento = request.args.get('idDocumento')
+        listar = class_getDocumento.Get_Documentos()
+        data = listar.Get(idDocumento)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500  # Devolver el error
+
+@app.route('/api/documentos/listardocumentosall', methods=['GET'])
+def listar_documentos_all():
+    try:
+        listar = class_listarDocumentos_All.Listar_Documentos()
+        data = listar.Listar()
         return data
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error

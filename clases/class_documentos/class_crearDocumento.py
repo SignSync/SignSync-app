@@ -17,21 +17,21 @@ class Crear_Documento:
         NO ERROR
             status, id_new_servicio
     '''
-    def Crear(self, datos):
+    def Crear(self, nombre, idContrato, file):
         try:
-            nombre = datos.get('nombre')
-            url = datos.get('costo')
-            idContrato = datos.get('idPaquete')
             
             if not idContrato:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contrato (idContrato)"}), 400
             
-            if not nombre or not url:
-                return jsonify({"status": False, "message": "Faltan datos obligatorios (nombre, url)"}), 400
+            if not file:
+                return jsonify({'error': 'No se envio el filepath'}), 400
+            
+            if not nombre:
+                return jsonify({"status": False, "message": "Faltan datos obligatorios (nombre)"}), 400
             
             newDocumento = Documentos(
                 nombre=nombre,
-                url=url,
+                url=file,
                 idContrato=idContrato
             )
             db.session.add(newDocumento)

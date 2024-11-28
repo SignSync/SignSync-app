@@ -17,12 +17,8 @@ class Editar_Documento:
         NO ERROR
             status, message
     '''
-    def Editar(self, datos):
+    def Editar(self, idDocumento, nombre, idContrato, file_path):
         try:
-            idDocumento = datos.get('idDocumento')
-            nombre = datos.get('nombre')
-            url = datos.get('url')
-            idContrato = datos.get('idContrato')
             
             if not idDocumento:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del documento (idDocumento)"}), 400
@@ -30,7 +26,7 @@ class Editar_Documento:
             if not idContrato:
                 return jsonify({"status": False, "message": "No se ha enviado el ID del contrato (idContrato)"}), 400
             
-            if not nombre or not url:
+            if not nombre or not file_path:
                 return jsonify({"status": False, "message": "Faltan datos obligatorios (nombre, url)"}), 400
             
             documento = Documentos.query.filter_by(idDocumento=idDocumento).first()
@@ -39,7 +35,7 @@ class Editar_Documento:
             
             
             documento.nombre = nombre if nombre else documento.nombre
-            documento.costo = url if url else url.costo
+            documento.url = file_path if file_path else documento.url
             documento.idContrato = idContrato if idContrato else documento.idContrato 
                        
             db.session.commit()

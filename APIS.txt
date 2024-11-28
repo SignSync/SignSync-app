@@ -179,7 +179,7 @@ method: DELETE
 Crear documentos - Crear registro de un documento, guardar enlace del documento
 enlace: /api/documentos/creardocumento
 method: POST
-    Parametros: nombre, url, idContrato 
+    Parametros: nombre, file, idContrato 
     return: status, id_new_documento
 
 
@@ -187,7 +187,7 @@ Editar documentos --
 enlace: /api/documentos/editardocumento
 method: PUT
     Parametros: 
-        idDocumento, idContrato, nombre, url
+        idDocumento, idContrato, nombre, file
     Return: 
         status,  message
 
@@ -203,7 +203,17 @@ method: GET
     parametros: idContrato
     Return: status, documentos
 
+listar todos los documentos ---
+enlace: /api/documentos/listardocumentosall
+method: GET
+    parametros: 
+    Return: status, documentos
 
+Obtener un documento por su ID -
+enlace:  /api/documentos/getdocumento
+method: GET
+    parametros: idDocumento
+    return: status, documento
 
 /// //////////////////// 
 Editar perfil ---
@@ -286,3 +296,4 @@ method: GET
     parametros:
     return 
         status, paquetes 
+
