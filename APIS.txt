@@ -297,3 +297,11 @@ method: GET
     return 
         status, paquetes 
 
+
+
+////////PROCESOS
+Listar contratos con el costo total de sus paquetes
+enlace: /api/contratos/contratocostos
+method: GET
+    parametros: idContratista || id_contratista
+    return: status, contratos

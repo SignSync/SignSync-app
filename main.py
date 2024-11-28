@@ -656,8 +656,22 @@ def listar_tablas():
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500
 
+from clases.class_procesos import class_proceso_uno
 
-
+@app.route('/api/contratos/contratocostos', methods=['GET'])
+def contratos_costos():
+    try:
+        idContratista = request.args.get('idContratista')
+        if not idContratista:
+            idContratista = request.args.get('id_contratista')
+        
+        # print(idContratista)
+        obj = class_proceso_uno.Listar_Contratos()
+        data = obj.Listar(idContratista)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
 
 
 
