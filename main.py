@@ -2,8 +2,13 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from config import DevelopmentConfig
 from models import db, Empresas
+from sqlalchemy import create_engine, text
+from sqlalchemy.sql import func
+import pandas as pd
+from models import Contratistas, Contratos, ContratosContratistas, Paquetes, Usuario, Empresas, Documentos
 
 import locale, os
+from datetime import date, timedelta, datetime
 
 from clases.sign_up import Sign_up
 from clases.class_sign_in import Sign_in
@@ -20,7 +25,9 @@ from clases.class_graficas import routes
 app = Flask(__name__)
 
 UPLOAD_FOLDER = 'static/uploads'
+GRAFICAS_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['GRAFICAS_FOLDER'] = GRAFICAS_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
@@ -533,26 +540,6 @@ def eliminar_documento():
         return jsonify({"error": str(e)}), 500  # Devolver el error
 
 
-
-# class Servicios(db.Model):
-#     __tablename__ = 'Servicios'
-#     idServicio = db.Column(db.Integer, primary_key=True)
-#     nombre = db.Column(db.String(50), nullable=False)
-#     idPaquete = db.Column(db.Integer, db.ForeignKey('Paquetes.idPaquete'), nullable=False)
-#     # servicio_paquete = db.relationship('Paquetes', backref='serivicio', cascade="all, delete-orphan")
-
-    
-# class Documentos(db.Model):
-#     __tablename__ = 'Documentos'
-#     idDocumento = db.Column(db.Integer, primary_key=True)
-#     nombre = db.Column(db.String(50), nullable=False)
-    
-#     idContrato = db.Column(db.Integer, db.ForeignKey('Contratos.idContrato'), nullable=False)
-
-
-
-
-
 #/////////////////////////GRAFICAS
 @app.route('/api/graficos', methods=['GET'])
 def dashboard():
@@ -567,6 +554,55 @@ def dashboard():
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500  # Devolver el error
+    
+@app.route('/api/graficos/update', methods=['POST'])
+def importar_csv():
+    tabla = request.form.get('tabla')
+    if not tabla:
+        return jsonify({"status": False, 'message': 'Faltan datos obligatorios (tabla)'}), 400
+    
+    archivo = request.files['file']
+    if archivo.filename == '':
+        return jsonify({"status": False, 'message': 'No se ha enviado el archivo (file)'}), 400
+        
+    model_mapping = {
+        'grafico_aceptabilidad': 'aceptabilidad',
+        'grafico_crecimiento': 'crecimiento',
+        'grafico_funcionabilidad': 'funcionalidad',
+        'grafico_rentabilidad': 'rentabilidad',
+        'grafico_satisfaccion': 'satisfaccion',
+        'grafico_viabilidad':'viabilidad'
+    }
+    
+    model = model_mapping.get(tabla.lower())
+    if archivo:
+        archivo_path = os.path.join(app.config['GRAFICAS_FOLDER'], archivo.filename)
+        archivo.save(archivo_path)
+            
+        engine = create_engine(DevelopmentConfig.SQLALCHEMY_DATABASE_URI, echo=True)
+        connection = engine.connect()
+        transaction = connection.begin()
+             # Paso 1: Eliminar la tabla si existe
+        try:
+            filepath = f"json/{model}.json"
+            if os.path.exists(filepath):
+                os.remove(filepath)
+                print(f"Archivo '{model}.json' eliminado exitosamente.")
+            else:
+                print(f"El archivo '{model}.json' no existe.")
+
+            connection.execute(text(f"DROP TABLE IF EXISTS {tabla}"))
+            archivo_csv = pd.read_csv(archivo_path)
+            archivo_csv.to_sql(name=tabla, con=connection, if_exists='fail')
+
+            transaction.commit()
+            return jsonify({"status": True, "message": "Grafica actualizada correctamente"}), 201
+        except Exception as e:
+            db.session.rollback()  # Hacer rollback si ocurre un error
+            return jsonify({"error": str(e)}), 500 #vierte la transacción en caso de error
+            
+        finally:
+            connection.close()  # Cierra la conexión
 
 
     
@@ -656,7 +692,10 @@ def listar_tablas():
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500
 
-from clases.class_procesos import class_proceso_uno
+
+#PROCESOS
+
+from clases.class_procesos import class_proceso_uno, class_proceso_dos
 
 @app.route('/api/contratos/contratocostos', methods=['GET'])
 def contratos_costos():
@@ -668,6 +707,68 @@ def contratos_costos():
         # print(idContratista)
         obj = class_proceso_uno.Listar_Contratos()
         data = obj.Listar(idContratista)
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/metrics/registrosdiarios', methods=['GET'])
+def registros_diarios():
+    try:
+        obj = class_proceso_dos.registros_diarios()
+        data = obj.Listar()
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/metrics/distribucion-sexo', methods=['GET'])
+def distribucion_sexo():
+    try:
+        results = db.session.query(
+            Usuario.sexo, 
+            func.count(Usuario.id_user).label('total')
+        ).group_by(Usuario.sexo).all()
+        
+        metrics = [{'sexo': row.sexo, 'total': row.total} for row in results]
+        data = jsonify({"status": True, "metricas": metrics}), 201
+        
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/metrics/edad-promedio', methods=['GET'])
+def edad_promedio():
+    try:
+        cumpleanos = db.session.query(Usuario.fecha_nacimiento).filter(Usuario.fecha_nacimiento != None).all()
+        
+        today = date.today()
+        ages = [
+            (today.year - bd[0].year) - ((today.month, today.day) < (bd[0].month, bd[0].day))
+            for bd in cumpleanos
+        ]
+        
+        avg_age = sum(ages) / len(ages) if ages else None
+        data = jsonify({'edad_promedio': round(avg_age, 2) if avg_age else None}), 201
+        
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/metrics/timeregistros', methods=['GET'])
+def usuarios_recientes():
+    try:    
+        cutoff_date = datetime.now() - timedelta(days=30)
+        usuarios_recientes = db.session.query(
+            func.count(Usuario.id_user)
+        ).filter(Usuario.created_date >= cutoff_date).scalar()
+        
+        # metrics = [{'sexo': row.sexo, 'total': row.total} for row in results]
+        data = jsonify({'usuarios_recientes': usuarios_recientes}), 201
+        
         return data
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error

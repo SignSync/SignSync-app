@@ -27,7 +27,7 @@ class Listar_Documentos:
             if not documentos:
                 return jsonify({"status": False, "message": f"No se han encontrado documentos con el ID de contrato: {idContrato}"}), 200
             
-            documentos_data = {
+            documentos_data = [
                 { 
                     "idDocumento": documento.idDocumento,
                     "nombre": documento.nombre,
@@ -35,7 +35,7 @@ class Listar_Documentos:
                     "idContrato": documento.idContrato,
                 }
                 for documento in documentos
-            }
+            ]
             
             data = jsonify({"status": True, "documentos": documentos_data}), 201
             

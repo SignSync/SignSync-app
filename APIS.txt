@@ -226,7 +226,7 @@ method: PUT
         fecha_nacimiento
     return: status, message
 
-Cmabiar password: 
+Cambiar password: 
 enlace: /api/perfil/cambiarpassword
 method: PUT
     parametros:
