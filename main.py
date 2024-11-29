@@ -693,9 +693,9 @@ def listar_tablas():
         return jsonify({"error": str(e)}), 500
 
 
-#PROCESOS
+#PROCESOS / METRICAS
 
-from clases.class_procesos import class_proceso_uno, class_proceso_dos
+from clases.class_procesos import class_proceso_uno, class_proceso_dos, class_proceso_tres
 
 @app.route('/api/contratos/contratocostos', methods=['GET'])
 def contratos_costos():
@@ -766,13 +766,113 @@ def usuarios_recientes():
             func.count(Usuario.id_user)
         ).filter(Usuario.created_date >= cutoff_date).scalar()
         
-        # metrics = [{'sexo': row.sexo, 'total': row.total} for row in results]
         data = jsonify({'usuarios_recientes': usuarios_recientes}), 201
         
         return data
     except Exception as e:
         db.session.rollback()  # Hacer rollback si ocurre un error
         return jsonify({"error": str(e)}), 500
+    
+    
+@app.route('/api/metrics/empresassector', methods=['GET'])
+def empresas_sector():
+    try:    
+        results = db.session.query(
+            Empresas.sector, 
+            func.count(Empresas.idEmpresa).label('total')
+        ).group_by(Empresas.sector).all()
+        
+        
+        metrics = [{'sector': row.sector, 'total': row.total} for row in results]
+        data = jsonify({"status": True, "metricas": metrics}), 201
+        
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/metrics/empresasnumcontratos', methods=['GET'])
+def empresas_numcontratos():
+    try:    
+        results = db.session.query(
+            Empresas.nombre, 
+            func.count(Contratos.idContrato).label('total_contratos')
+        ).join(Contratos, Empresas.idEmpresa == Contratos.id_empresa).group_by(Empresas.idEmpresa).order_by(func.count(Contratos.idContrato).desc()).all()
+
+        metrics = [{'nombre': row.nombre, 'total_contratos': row.total_contratos} for row in results]
+        data = jsonify({"status": True, "metricas": metrics}), 201
+        
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/metrics/contratosactivos', methods=['GET'])
+def contratos_activos():
+    try:    
+        obj = class_proceso_tres.Contratos_Activos()
+        data = obj.Listar()
+        
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+    
+@app.route('/api/metrics/contratistaempresa', methods=['GET'])
+def contratistas_empresa():
+    try:    
+        results = db.session.query(
+            Empresas.nombre, 
+            func.count(Contratistas.idContratista).label('total_contratistas')
+        ).join(Contratistas, Empresas.idEmpresa == Contratistas.id_empresa).group_by(Empresas.idEmpresa).all()
+        
+        metrics = [{'nombre': row.nombre, 'total_contratistas': row.total_contratistas} for row in results]
+        data = jsonify({"status": True, "metricas": metrics}), 201
+        
+        
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/metrics/paquetes-contratos', methods=['GET'])
+def num_paquetes_contrato():
+    try:    
+        results = db.session.query(
+            Contratos.nombre.label('nombre_contrato'),
+            func.count(Paquetes.idPaquete).label('total_paquetes')
+        ).join(Paquetes, Contratos.idContrato == Paquetes.idContrato).group_by(Contratos.idContrato).all()
+
+        metrics = [{'nombre': row.nombre_contrato, 'total_paquetes': row.total_paquetes} for row in results]
+        data = jsonify({"status": True, "metricas": metrics}), 201
+        
+        
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/metrics/documentos-contratos', methods=['GET'])
+def num_documentos_contrato():
+    try:    
+        results = db.session.query(
+            Contratos.nombre, 
+            func.count(Documentos.idDocumento).label('total_documentos')
+        ).join(Documentos, Contratos.idContrato == Documentos.idContrato).group_by(Contratos.idContrato).all()
+
+
+        metrics = [{'nombre': row.nombre, 'total_documentos': row.total_documentos} for row in results]
+        data = jsonify({"status": True, "metricas": metrics}), 201
+        
+        
+        return data
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si ocurre un error
+        return jsonify({"error": str(e)}), 500
+
+
 
 
 
